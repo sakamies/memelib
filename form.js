@@ -7,7 +7,7 @@ export class Form {
   constructor(form, event) {
     this.form = document.forms[form] || form || document.forms[0]
 
-    if (form instanceof HTMLFormElement !== true) {
+    if (this.form instanceof HTMLFormElement !== true) {
       console.warn('No form found for', this)
     }
 
@@ -31,6 +31,7 @@ export class Form {
   }
   valuesGet = (_, name) => {
     //TODO: support checkboxes? Maybe get all checkboxes that match this name and return an array of values?
+    //TODO: some way to get numbers?
     return this.form.elements[name]?.value
   }
   valuesSet = (_, name, value) => {
@@ -52,6 +53,13 @@ export class Form {
     return true
   }
 
+  change = (arg) => {
+    if (arg instanceof HTMLFormElement) {
+      return (new Form(arg)).change
+    }
+    this.form.dispatchEvent(this.event || Form.event)
+  }
+
   batch = (callback) => {
     if (callback instanceof HTMLFormElement) {
       return (new Form(callback)).batch
@@ -65,7 +73,7 @@ export class Form {
 
   listen = (...args) => {
     if (args.length === 1 && args[0] instanceof HTMLFormElement) {
-      return (new Form(callback)).listen
+      return (new Form(args[0])).listen
     }
     const callbacks = args.filter(arg => typeof arg === 'function')
     let events = args.filter(arg => typeof arg === 'string')
