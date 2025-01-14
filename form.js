@@ -2,14 +2,21 @@
 
 export class Form {
   static event = new Event('change', {bubbles: true})
+  static events = ['input', 'change']
 
   constructor(form, event) {
-    this.form = document.forms[form] || form || document.forms[0] // Maybe verify this is an HTMLFormElement?
+    this.form = document.forms[form] || form || document.forms[0]
+
+    if (form instanceof HTMLFormElement !== true) {
+      console.warn('No form found for', this)
+    }
+
     if (event === true) {
       this.event = Form.event
     } else if (event) {
       this.event = event
     }
+
     this.values = new Proxy(Function(), {
       apply: this.valuesApply,
       get: this.valuesGet,
@@ -36,6 +43,14 @@ export class Form {
     }
     return true //Setters are supposed to return true if they succeeded, but returning false throws.
   }
+  valuesDelete = (_, name) => {
+    //TODO: support checkboxes? Maybe get all checkboxes that match this name and return an array of values?
+    const node = this.form.elements[name]
+    if (node) {
+      node.value = node.defaultValue
+    }
+    return true
+  }
 
   batch = (callback) => {
     if (callback instanceof HTMLFormElement) {
@@ -46,5 +61,22 @@ export class Form {
     callback(this.values)
     this.form.dispatchEvent(event || Form.event)
     this.event = event
+  }
+
+  listen = (...args) => {
+    if (args.length === 1 && args[0] instanceof HTMLFormElement) {
+      return (new Form(callback)).listen
+    }
+    const callbacks = args.filter(arg => typeof arg === 'function')
+    let events = args.filter(arg => typeof arg === 'string')
+
+    if (!events.length) events = Form.events
+
+    for (let event of events) {
+      for (let callback of callbacks) {
+        this.form.addEventListener(event, () => callback(this.values))
+      }
+      //TODO: debounce all? Maybe the expectation is that this is synchronous?
+    }
   }
 }
