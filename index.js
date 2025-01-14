@@ -1,23 +1,28 @@
 //
-//Let's meme!
+// Let's meme!
 //
 import { Meme } from './memelib.js'
 let {ids, classes, forms} = new Meme(document)
 
-//Apply scope
+// Apply scope
 ids = ids(document)
 
-// Get node by id
+// Get element by id
 console.log('ids', {test: ids.test1})
 
-//Set textContent
+// Set textContent of element with test1 id.
 ids.test1 = 'Text content'
 
-//Set innerHTML with square brackets because it looks heavier.
+// innerHTML is set with square brackets because it's a heavier operation and square brackets look heavier.
 ids.test2 = ['<b>HTML</b> content']
 
-//node.remove()
+// Same as document.getElementById('deleteme').remove()
 delete ids.deleteme
+
+
+
+// Classes returns an array of elements with this class
+console.log('classes', classes.test)
 
 
 
