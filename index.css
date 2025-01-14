@@ -1,0 +1,9 @@
+body {
+  font-family: monospace;
+  line-height: 1.33;
+  display: grid;
+  place-content: center;
+}
+input {
+  font: inherit;
+}
