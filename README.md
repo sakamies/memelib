@@ -4,7 +4,7 @@ Get, set and manipulate elements and forms super easy.
 
 I just learned a lot of javascript and now I want to use all its power. Really I just want to do basic dom stuff in a nicer way. Like the jQuerys and MooTools of old.
 
-```
+```js
 const { ids, classes, forms } = new Meme(document)
 ids.test1 = 'Set text content by assignment'
 delete ids.removeme // I always liked the delete operator
