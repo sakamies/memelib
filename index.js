@@ -6,6 +6,10 @@ import { Meme } from './memelib.js'
 const mememe = new Meme(document)
 const { id, classes, form, query } = mememe
 //
+// Use whatever names you want by destructuring
+const { id: myids } = mememe
+console.log(myids.test1)
+//
 console.groupEnd()
 
 
@@ -71,7 +75,7 @@ console.log('input tags by selector', query.input)
 console.log('scoped query .test', query(id.scope)['.test'])
 //
 // Delete all elements of a class
-// delete query['.test']
+delete query['.removeus2']
 //
 console.groupEnd()
 
@@ -87,7 +91,7 @@ console.log('example form exists?', 'example' in form)
 // Get element by name, id, or index. Same as document.forms
 console.log('form named example', form.example)
 //
-// Set form values with FormData? Dunno how yet
+// TODO: Set form values with FormData? Dunno how yet
 // form.example = [['key1', 'value'], ['key2', 'value']]
 //
 // Reset form
@@ -110,10 +114,10 @@ const { values, listen, change, batch } = new MemeForm(form.example) //Param is 
 // If you only have one form in the document, calling new Form() without a parameter would choose that
 //
 // Send an event on every value modified?
-new MemeForm(form.example, true)
+const { values: chattyvalues } = new MemeForm(form.example, true)
 //
 // Maybe you need custom events?
-new MemeForm('example', new CustomEvent('my-custom-event'))
+const { values: eventfulvalues } = new MemeForm('example', new CustomEvent('my-custom-event'))
 //
 // Get value of a form element
 console.log('values.numberout', values.numberout)
