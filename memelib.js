@@ -4,12 +4,12 @@ export class Meme {
   constructor(root) {
     this.root = root || document
 
-    this.ids = new Proxy(Function(), {
-      apply: (_, __, [root]) => this.idsApply(root),
-      get: this.idsGet,
-      has: this.idsHas,
-      set: this.idsSet,
-      deleteProperty: this.idsDelete,
+    this.id = new Proxy(Function(), {
+      apply: this.idApply,
+      get: this.idGet,
+      has: this.idHas,
+      set: this.idSet,
+      deleteProperty: this.idDelete,
     })
 
     this.classes = new Proxy(Function(), {
@@ -20,39 +20,49 @@ export class Meme {
       // ownKeys: this.classesOwnKeys, //list all classes? not sure how useful, but fun
     })
 
-    this.forms = new Proxy(Function(), {
-      apply: this.formsApply,
-      has: this.formsHas,
-      get: this.formsGet,
-      set: this.formsSet,
-      delete: this.formsDelete,
+    this.query = new Proxy(Function(), {
+      apply: this.queryApply,
+      has: this.queryHas,
+      get: this.queryGet,
+      set: this.querySet,
+      delete: this.queryDelete,
     })
+
+    this.form = new Proxy(Function(), {
+      apply: this.formApply,
+      has: this.formHas,
+      get: this.formGet,
+      set: this.formSet,
+      delete: this.formDelete,
+    })
+
   }
 
 
 
-  //TODO: don't need to write apply function as a copy for ids, classes and forms.
+  //TODO: don't need to write apply function as a copy for id, classes and forms.
   // Arrow functions so this always means the instance of Meme class
-  idsApply = (root) => {
-    return (new Meme(root)).ids
+  idApply = (_, __, [root]) => {
+    return (new Meme(root)).id
   }
-  idsHas = (_, name) => {
+  idHas = (_, name) => {
     const node = document.getElementById(name)
     if (this.root.contains(node)) return !!node
   }
-  idsGet = (_, name) => {
+  idGet = (_, name) => {
     const node = document.getElementById(name)
     if (this.root.contains(node)) return node
   }
-  idsSet = (_, name, value) => {
+  idSet = (_, name, value) => {
+    const html = Array.isArray(value) && value.join('')
     const node = document.getElementById(name)
     if (this.root.contains(node)) {
-      if (Array.isArray(value)) node.innerHTML = value.join('')
+      if (html) node.innerHTML = html
       else node.textContent = String(value)
     }
     return true
   }
-  idsDelete = (_, name) => {
+  idDelete = (_, name) => {
     const node = document.getElementById(name)
     if (this.root.contains(node)) node.remove()
     return true
@@ -70,6 +80,18 @@ export class Meme {
   classesGet = (_, name) => {
     return Array.from(document.getElementsByClassName(name))
   }
+  classesSet = (_, name, value) => {
+    const html = Array.isArray(value) && value.join('')
+    const nodes = Array
+      .from(document.getElementsByClassName(name))
+      .filter(node => this.root.contains(node))
+
+    nodes.forEach(node => {
+      if (html) node.innerHTML = html
+      else node.textContent = String(value)
+    })
+    return true
+  }
   classesDelete = (_, name) => {
     const nodes = Array.from(document.getElementsByClassName(name))
     for (let node of nodes) {
@@ -82,21 +104,40 @@ export class Meme {
 
 
 
-  formsApply = (_, __, [root]) => {
-    return (new Meme(root)).forms
+  queryApply = (_, __, [root]) => {
+    return (new Meme(root)).query
   }
-  formsHas = (_, name) => {
+  queryHas = (_, selector) => {
+    return !!this.root.querySelectorAll(selector).length
+  }
+  queryGet = (_, selector) => {
+    return this.root.querySelectorAll(selector)
+  }
+  queryDelete = (_, selector) => {
+    const nodes = Array.from(this.root.querySelectorAll(selector))
+    for (let node of nodes) {
+      node.remove()
+    }
+    return true
+  }
+
+
+
+  formApply = (_, __, [root]) => {
+    return (new Meme(root)).form
+  }
+  formHas = (_, name) => {
     const node = document.forms[name]
     if (this.root.contains(node)) return !!node
   }
-  formsGet = (_, name) => {
+  formGet = (_, name) => {
     const node = document.forms[name]
     if (this.root.contains(node)) return node
   }
-  formsSet = (_, name, data) => {
+  formSet = (_, name, data) => {
     //TODO: set form entries with given data somehow?
   }
-  formsDelete = (_, name) => {
+  formDelete = (_, name) => {
     const node = document.forms[name]
     if (this.root.contains(node)) node.reset()
     return true

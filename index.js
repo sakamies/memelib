@@ -1,41 +1,43 @@
 //
-// Let's meme!
+console.group("Let's meme!")
 //
 import { Meme } from './memelib.js'
-// Use ids, classes, forms on their own, or use the whole class instance, up to you
+// Use id, classes, form, query on their own, or use the whole class instance, up to you
 const mememe = new Meme(document)
-const { ids, classes, forms } = mememe
+const { id, classes, form, query } = mememe
 //
+console.groupEnd()
 
 
 
-// ids
+console.group('id')
 //
-// Check if element exists by id. Same as testing ids.test1 to be truthy though
-console.log('element with id test1?', 'test1' in ids)
+// Check if element exists by id. Same as testing id.test1 to be truthy though
+console.log('element with id test1?', 'test1' in id)
 //
 // Get element by id
-console.log('ids test1', ids.test1)
+console.log('id test1', id.test1)
 //
 // Set textContent
-ids.test1 = 'Text content'
+id.test1 = 'Text content'
 //
 // Set innerHTML with square brackets because it's heavier and square brackets look heavier
-ids.test2 = ['<b>HTML</b> content']
+id.test2 = ['<b>HTML</b> content']
 //
 // Remove element
-delete ids.removeme
+delete id.removeme
 //
-// Get a scoped instance. Look for ids inside that
-const scoped = ids(ids.scope)
-console.log('ids scoped', scoped.test1)
+// Get a scoped instance. Look for id inside that
+const scoped = id(id.scope)
+console.log('id scoped', scoped.test1)
 //
+console.groupEnd()
 
 
 
-//
-// classes
-//
+
+
+console.group('classes')
 //
 // Any elements with this class?
 console.log('Any elements of class test?', 'test' in classes)
@@ -43,50 +45,75 @@ console.log('Any elements of class test?', 'test' in classes)
 // Returns an array of elements of class
 console.log('elements class test', classes.test)
 //
-// Scopable like ids
-console.log('scoped classes', classes(ids.scope).test)
+// Scopable like id
+console.log('scoped classes', classes(id.scope).test)
 //
 // Delete all elements of a class
 delete classes.removeus
 //
+console.groupEnd()
 
 
 
+
+
+console.group('query')
 //
-// forms
+// Same as classes, but css selectors
+console.log('Any elements for selector h1 + p?', 'h1 + p' in query)
+//
+// Returns an array of elements by selector
+console.log('elements for selector h1 + p', query['h1 + p'])
+//
+// You don't need square brackets, get tags like this
+console.log('input tags by selector', query.input)
+// Scopable
+console.log('scoped query .test', query(id.scope)['.test'])
+//
+// Delete all elements of a class
+// delete query['.test']
+//
+console.groupEnd()
+
+
+
+
+
+console.group('form')
 //
 // Check if element exists
-console.log('example form exists?', 'example' in forms)
+console.log('example form exists?', 'example' in form)
 //
 // Get element by name, id, or index. Same as document.forms
-console.log('form named example', forms.example)
+console.log('form named example', form.example)
 //
 // Set form values with FormData? Dunno how yet
-// forms.example = [['key1', 'value'], ['key2', 'value']]
+// form.example = [['key1', 'value'], ['key2', 'value']]
 //
 // Reset form
-delete forms.example
+delete form.example
 //
 // Scopable as usual.
-console.log("there's no form inside scope", forms(ids.scope).example)
+console.log("there's no form inside scope", form(id.scope).example)
 //
+console.groupEnd()
 
 
 
+
+
+console.group('memeform')
 //
-// form
+import { MemeForm } from './form.js'
 //
-import { Form } from './form.js'
-//
-const form = forms.example
-const { values, listen, change, batch } = new Form(form) //Param is form id, name or form node
+const { values, listen, change, batch } = new MemeForm(form.example) //Param is form id, name or form node
 // If you only have one form in the document, calling new Form() without a parameter would choose that
 //
 // Send an event on every value modified?
-new Form(forms.example, true)
+new MemeForm(form.example, true)
 //
 // Maybe you need custom events?
-new Form('example', new CustomEvent('my-custom-event'))
+new MemeForm('example', new CustomEvent('my-custom-event'))
 //
 // Get value of a form element
 console.log('values.numberout', values.numberout)
@@ -123,10 +150,9 @@ batch(values => {
 })
 //
 // Scopes work as usual
-values(form) // get new values scoped to that form
-batch(form) // get a new batch function for that form
-listen(form) // get a new listener function for that form
-change(form) // get a new change function for that form
+values(form.example) // get new values scoped to that form
+batch(form.example) // get a new batch function for that form
+listen(form.example) // get a new listener function for that form
+change(form.example) // get a new change function for that form
 //
-//
-
+console.groupEnd()
