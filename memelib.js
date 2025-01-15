@@ -25,7 +25,7 @@ export class Meme {
       has: this.queryHas,
       get: this.queryGet,
       set: this.querySet,
-      delete: this.queryDelete,
+      deleteProperty: this.queryDelete,
     })
 
     this.form = new Proxy(Function(), {
