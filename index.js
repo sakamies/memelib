@@ -110,7 +110,7 @@ console.group('memeform')
 //
 import { MemeForm } from './form.js'
 //
-const { values, listen, change, batch } = new MemeForm(form.example) //Param is form id, name or form node
+const { values, listen, change, batch } = new MemeForm(form.example.elements.set) //Param is whatever document.forms[key] accepts as key, an HTMLFormElement, or an HTMLFieldSetElement.
 // If you only have one form in the document, calling new Form() without a parameter would choose that
 //
 // Send an event on every value modified?
