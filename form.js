@@ -98,4 +98,11 @@ function getRoot(root) {
     return root
   }
 }
+
+function validateLabel(input) {
+  // This is harsh, but labels are the actual law nowadays.
+  // (aria-label exists, but <label>s are just the best.)
+  if (!input.labels?.length && !['output', 'hidden'].includes(input.type)) {
+    throw new Error(`Missing <label>`, {cause: input});
+  }
 }
