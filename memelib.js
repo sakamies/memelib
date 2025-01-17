@@ -20,14 +20,6 @@ export class Meme {
       // ownKeys: this.classesOwnKeys, //list all classes? not sure how useful, but fun
     })
 
-    this.query = new Proxy(Function(), {
-      apply: this.queryApply,
-      has: this.queryHas,
-      get: this.queryGet,
-      set: this.querySet,
-      deleteProperty: this.queryDelete,
-    })
-
     this.form = new Proxy(Function(), {
       apply: this.formApply,
       has: this.formHas,
@@ -98,25 +90,6 @@ export class Meme {
       if (this.root.contains(node)) {
         node.remove()
       }
-    }
-    return true
-  }
-
-
-
-  queryApply = (_, __, [root]) => {
-    return (new Meme(root)).query
-  }
-  queryHas = (_, selector) => {
-    return !!this.root.querySelectorAll(selector).length
-  }
-  queryGet = (_, selector) => {
-    return this.root.querySelectorAll(selector)
-  }
-  queryDelete = (_, selector) => {
-    const nodes = Array.from(this.root.querySelectorAll(selector))
-    for (let node of nodes) {
-      node.remove()
     }
     return true
   }

@@ -2,9 +2,9 @@
 console.group("Let's meme!")
 //
 import { Meme } from './memelib.js'
-// Use id, classes, form, query on their own, or use the whole class instance, up to you
+// Use id, classes, form on their own, or use the whole class instance, up to you
 const mememe = new Meme(document)
-const { id, classes, form, query } = mememe
+const { id, classes, form } = mememe
 //
 // Use whatever names you want by destructuring
 const { id: myids } = mememe
@@ -54,28 +54,6 @@ console.log('scoped classes', classes(id.scope).test)
 //
 // Delete all elements of a class
 delete classes.removeus
-//
-console.groupEnd()
-
-
-
-
-
-console.group('query')
-//
-// Same as classes, but css selectors
-console.log('Any elements for selector h1 + p?', 'h1 + p' in query)
-//
-// Returns an array of elements by selector
-console.log('elements for selector h1 + p', query['h1 + p'])
-//
-// You don't need square brackets, get tags like this
-console.log('input tags by selector', query.input)
-// Scopable
-console.log('scoped query .test', query(id.scope)['.test'])
-//
-// Delete all elements of a class
-delete query['.removeus2']
 //
 console.groupEnd()
 
