@@ -45,8 +45,9 @@ console.log('Any elements of class test?', 'test' in classes)
 // Returns an array of elements of class
 console.log('elements class test', classes.test)
 //
-// Scopable like id
-console.log('scoped classes', classes(id.scope).test)
+// Set text as string, or html with angle brackets like id.
+// Set per node text/html with a function.
+classes.test = (node, i) => ['Test <b>' + (i+2) + '</b>']
 //
 // Delete all elements of a class
 delete classes.removeus
