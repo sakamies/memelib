@@ -49,6 +49,10 @@ console.log('elements class test', classes.test)
 // Set per node text/html with a function.
 classes.test = (node, i) => ['Test <b>' + (i+2) + '</b>']
 //
+// Only look for classes inside scope.
+const scopedClasses = classes(id.scope)
+console.log('scoped classes', scopedClasses.test)
+//
 // Delete all elements of a class
 delete classes.removeus
 //
