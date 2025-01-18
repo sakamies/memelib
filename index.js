@@ -31,10 +31,6 @@ id.test2 = ['<b>HTML</b> content']
 // Remove element
 delete id.removeme
 //
-// Get a scoped instance. Look for id inside that
-const scoped = id(id.scope)
-console.log('id scoped', scoped.test1)
-//
 console.groupEnd()
 
 
@@ -74,9 +70,6 @@ console.log('form named example', form.example)
 //
 // Reset form
 delete form.example
-//
-// Scopable as usual.
-console.log("there's no form inside scope", form(id.scope).example)
 //
 console.groupEnd()
 
