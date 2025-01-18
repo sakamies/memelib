@@ -86,16 +86,16 @@ console.groupEnd()
 
 console.group('memeform')
 //
-import { MemeForm } from './form.js'
+import { Form } from './form.js'
 //
-const { values, listen, change, batch } = new MemeForm(form.example.elements.set) //Param is whatever document.forms[key] accepts as key, an HTMLFormElement, or an HTMLFieldSetElement.
+const { values, listen, change, batch } = new Form(form.example.elements.set) //Param is whatever document.forms[key] accepts as key, an HTMLFormElement, or an HTMLFieldSetElement.
 // If you only have one form in the document, calling new Form() without a parameter would choose that
 //
 // Send an event on every value modified?
-const { values: chattyvalues } = new MemeForm(form.example, true)
+const { values: chattyvalues } = new Form(form.example, true)
 //
 // Maybe you need custom events?
-const { values: eventfulvalues } = new MemeForm('example', new CustomEvent('my-custom-event'))
+const { values: eventfulvalues } = new Form('example', new CustomEvent('my-custom-event'))
 //
 // Get value of a form element
 console.log('values.numberout', values.numberout)
