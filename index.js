@@ -77,7 +77,7 @@ console.groupEnd()
 
 
 
-console.group('memeform')
+console.group('Form')
 //
 import { Form } from './form.js'
 //
