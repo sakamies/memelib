@@ -15,6 +15,7 @@ export class Meme {
       apply: this.classesApply,
       get: this.classesGet,
       has: this.classesHas,
+      set: this.classesSet,
       deleteProperty: this.classesDelete,
       // ownKeys: this.classesOwnKeys, //list all classes? not sure how useful, but fun
     })
@@ -39,12 +40,8 @@ export class Meme {
     if (this.root.contains(node)) return node
   }
   idSet = (_, name, value) => {
-    const html = Array.isArray(value) && value.join('')
     const node = document.getElementById(name)
-    if (this.root.contains(node)) {
-      if (html) node.innerHTML = html
-      else node.textContent = String(value)
-    }
+    if (this.root.contains(node)) set(node, value)
     return true
   }
   idDelete = (_, name) => {
@@ -66,14 +63,14 @@ export class Meme {
     return Array.from(document.getElementsByClassName(name))
   }
   classesSet = (_, name, value) => {
-    const html = Array.isArray(value) && value.join('')
     const nodes = Array
       .from(document.getElementsByClassName(name))
       .filter(node => this.root.contains(node))
 
-    nodes.forEach(node => {
-      if (html) node.innerHTML = html
-      else node.textContent = String(value)
+    nodes.forEach((node, i) => {
+      let content = value
+      if (typeof value === 'function') content = value(node, i)
+      set(node, content)
     })
     return true
   }
@@ -107,4 +104,10 @@ export class Meme {
     return true
   }
 
+}
+
+function set(node, content) {
+  const html = Array.isArray(content) && content.join('')
+  if (html) node.innerHTML = html
+  else node.textContent = String(content)
 }
