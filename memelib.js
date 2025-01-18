@@ -5,7 +5,6 @@ export class Meme {
     this.root = root || document
 
     this.id = new Proxy(Function(), {
-      apply: this.idApply,
       get: this.idGet,
       has: this.idHas,
       set: this.idSet,
@@ -21,7 +20,6 @@ export class Meme {
     })
 
     this.form = new Proxy(Function(), {
-      apply: this.formApply,
       has: this.formHas,
       get: this.formGet,
       set: this.formSet,
@@ -32,11 +30,6 @@ export class Meme {
 
 
 
-  //TODO: don't need to write apply function as a copy for id, classes and forms.
-  // Arrow functions so this always means the instance of Meme class
-  idApply = (_, __, [root]) => {
-    return (new Meme(root)).id
-  }
   idHas = (_, name) => {
     const node = document.getElementById(name)
     if (this.root.contains(node)) return !!node
@@ -96,9 +89,7 @@ export class Meme {
 
 
 
-  formApply = (_, __, [root]) => {
-    return (new Meme(root)).form
-  }
+
   formHas = (_, name) => {
     const node = document.forms[name]
     if (this.root.contains(node)) return !!node
