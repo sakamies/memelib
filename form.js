@@ -28,6 +28,7 @@ export class Form {
   valuesGet = (_, name) => {
     //TODO: support checkboxes? Maybe get all checkboxes that match this name and return an array of values?
     //TODO: some way to get numbers?
+    //TODO: if element is fieldset, probably return the fieldset node?
     const node = this.root.elements[name]
     validateLabel(node)
     return node?.value
