@@ -107,3 +107,10 @@ function set(node, content) {
   if (html) node.innerHTML = html
   else node.textContent = String(content)
 }
+
+
+///////////////////////
+
+export const id = (new Meme()).id
+export const classes = (new Meme()).classes
+export const form = (new Meme()).form

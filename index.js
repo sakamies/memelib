@@ -1,14 +1,9 @@
 //
 console.group("Let's meme!")
-//
-import { Meme } from './memelib.js'
-// Use id, classes, form on their own, or use the whole class instance, up to you
-const mememe = new Meme(document)
-const { id, classes, form } = mememe
+import { id, classes, form } from './memelib.js'
 //
 // Use whatever names you want by destructuring
-const { id: myids } = mememe
-console.log(myids.test1)
+//import { id: myid } from './memelib.js'
 //
 console.groupEnd()
 
