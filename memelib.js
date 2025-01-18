@@ -1,6 +1,4 @@
-//TODO: Maybe put default export from this module inside an iife so you always get fresh scoped {ids, classes, forms} by default, but can import the class if you want to configure it?
-
-export class Meme {
+class Meme {
   constructor(root) {
     this.root = root || document
 
@@ -77,9 +75,7 @@ export class Meme {
   classesDelete = (_, name) => {
     const nodes = Array.from(document.getElementsByClassName(name))
     for (let node of nodes) {
-      if (this.root.contains(node)) {
-        node.remove()
-      }
+      if (this.root.contains(node)) node.remove()
     }
     return true
   }
