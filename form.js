@@ -102,8 +102,13 @@ function getRoot(root) {
 
 function validateLabel(node) {
   // This is harsh, but labels are the actual law nowadays.
-  // (aria-label exists, but <label>s are just the best.)
-  if (!node.labels?.length && !['fieldset', 'output', 'hidden'].includes(node.type)) {
+  const unlabelledElement = ['fieldset', 'output', 'hidden'].includes(node.type)
+  const hasLabel = node.labels?.length
+  const hasAria = node.getAttribute('aria-label') || node.getAttribute('aria-labelledby')
+  if (hasLabel || hasAria || unlabelledElement) {
+    //Right on!
+  } else {
+    console.error(node)
     throw new Error(`Missing <label>`, {cause: node});
   }
 }
