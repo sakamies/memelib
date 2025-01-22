@@ -112,3 +112,10 @@ function validateLabel(node) {
     throw new Error(`Missing <label>`, {cause: node});
   }
 }
+
+///////////////////////
+
+export const values = (new Form()).values
+export const change = (new Form()).change
+export const batch = (new Form()).batch
+export const listen = (new Form()).listen
