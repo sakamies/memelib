@@ -42,7 +42,6 @@ export class Form {
     return true //Setters are supposed to return true if they succeeded, but returning false throws.
   }
   valuesDelete = (_, name) => {
-    //TODO: support checkboxes? Maybe get all checkboxes that match this name and return an array of values?
     const node = this.root.elements[name]
     validateLabel(node)
     if (node) {
