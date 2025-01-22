@@ -1,4 +1,4 @@
-class Meme {
+export class Meme {
   constructor(root) {
     this.root = root || document
 
@@ -107,7 +107,6 @@ function set(node, content) {
   if (html) node.innerHTML = html
   else node.textContent = String(content)
 }
-
 
 ///////////////////////
 
