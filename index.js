@@ -81,7 +81,7 @@ console.group('Form')
 //
 import { Form } from './form.js'
 //
-const { values, listen, change, batch } = new Form(form.example.elements.set) //Param is whatever document.forms[key] accepts as key, an HTMLFormElement, or an HTMLFieldSetElement.
+const { values, listen, change, batch } = new Form() //Param is whatever document.forms[key] accepts as key, an HTMLFormElement, or an HTMLFieldSetElement.
 // If you only have one form in the document, calling new Form() without a parameter would choose that
 //
 // Send an event on every value modified?
