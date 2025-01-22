@@ -26,20 +26,19 @@ export class Form {
     return (new Form(root)).values
   }
   valuesGet = (_, name) => {
-    //TODO: support checkboxes? Maybe get all checkboxes that match this name and return an array of values?
     //TODO: some way to get numbers?
-    //TODO: if element is fieldset, probably return the fieldset node?
     const node = this.root.elements[name]
     validateLabel(node)
-    return node?.value
+    if (node.type === 'fieldset') return (new Form(node)).values
+    else if (node.type === 'checkbox') return node.checked ? node.value : null
+    else return node.value
   }
   valuesSet = (_, name, value) => {
-    //TODO: support checkboxes, maybe by passing an array of truthy / falsy values? Null or undefined array items could mean that don't modify this one.
-    //Like values.check = [true, undefined, false]
     const node = this.root.elements[name]
     validateLabel(node)
     if (node) {
-      node.value = value
+      if (node.type === 'checkbox') node.checked = value
+      else node.value = value
       if (this.event) node.dispatchEvent(this.event)
     }
     return true //Setters are supposed to return true if they succeeded, but returning false throws.
@@ -49,7 +48,8 @@ export class Form {
     const node = this.root.elements[name]
     validateLabel(node)
     if (node) {
-      node.value = node.defaultValue
+      if (node.type === 'checkbox') node.checked = node.getAttribute('checked')
+      else node.value = node.defaultValue
     }
     return true
   }

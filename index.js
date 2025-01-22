@@ -93,8 +93,17 @@ const { values: eventfulvalues } = new Form('example', new CustomEvent('my-custo
 // Get value of a form element
 console.log('values.numberout', values.numberout)
 //
+// A fieldset gives you a new values() scoped to that fieldset
+console.log('values.fieldsettest.number', values.fieldsettest.numberout)
+//
 // Set value of a form element
 values.numberout = 0
+//
+// For checkboxes, you get the value if the checkbox is checked, just like FormData does.
+// But you set checkbox checked state, not its value
+console.log('unchecked checkbox', values.checkbox1)
+values.checkbox1 = true
+console.log('checked checkbox', values.checkbox1)
 //
 // Reset value
 delete values.numberout
@@ -126,6 +135,7 @@ batch(values => {
 //
 // Scopes work as usual
 values(form.example) // get new values scoped to that form
+values(form.example.elements.fieldsettest) // you can also scope to fieldsets
 batch(form.example) // get a new batch function for that form
 listen(form.example) // get a new listener function for that form
 change(form.example) // get a new change function for that form
