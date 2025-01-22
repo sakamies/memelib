@@ -1,5 +1,3 @@
-//TODO: Maybe put default export from this module inside an iife so you always get fresh scoped {values, batch} by default, but can import the class if you want to configure it?
-
 export class Form {
   static event = new Event('change', {bubbles: true})
   static events = ['input', 'change']
