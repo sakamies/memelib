@@ -2,48 +2,61 @@ export class Form {
   static event = new Event('change', {bubbles: true})
   static events = ['input', 'change']
 
-  constructor(root, event) {
+  root
+  path
+
+  constructor(root, path) {
     this.root = getRoot(root) || document.forms[0]
+    this.path = path || []
 
-    if (event === true) {
-      this.event = Form.event
-    } else if (event) {
-      this.event = event
-    }
-
-    this.values = new Proxy(Function(), {
+    this.values = new Proxy(function values(){}, {
       apply: this.valuesApply,
       get: this.valuesGet,
       has: this.valuesHas,
       set: this.valuesSet,
       deleteProperty: this.valuesDelete,
     })
+
+    this.tree = new Proxy(function tree(){}, {
+      apply: this.treeApply,
+      get: this.treeGet,
+      has: this.treeHas,
+      set: this.treeSet,
+      deleteProperty: this.treeDelete,
+    })
+
+    this.leaf = new Proxy(function leaf(){}, {
+      apply: this.leafApply,
+      get: this.leafGet,
+      has: this.leafHas,
+      set: this.leafSet,
+      deleteProperty: this.leafDelete,
+    })
   }
 
   valuesApply = (_, __, [root]) => {
-    return (new Form(root)).values
+    return (new Form(getRoot(root))).values
   }
   valuesGet = (_, name) => {
     //TODO: some way to get numbers?
     const node = this.root.elements[name]
-    validateLabel(node)
+    validateNode(node)
+    //if (node.valueAsDate !== null) return node.valueAsDate
+    //if (node.valueAsNumber !== NaN) return node.valueAsNumber
+    if (node.type === 'checkbox') return node.checked ? node.value : null
     if (node.type === 'fieldset') return (new Form(node)).values
-    else if (node.type === 'checkbox') return node.checked ? node.value : null
-    else return node.value
+    return node.value
   }
   valuesSet = (_, name, value) => {
     const node = this.root.elements[name]
-    validateLabel(node)
-    if (node) {
-      if (node.type === 'checkbox') node.checked = value
-      else node.value = value
-      if (this.event) node.dispatchEvent(this.event)
-    }
-    return true //Setters are supposed to return true if they succeeded, but returning false throws.
+    validateNode(node)
+    if (node.type === 'checkbox') node.checked = value
+    else node.value = value
+    return true
   }
   valuesDelete = (_, name) => {
     const node = this.root.elements[name]
-    validateLabel(node)
+    validateNode(node)
     if (node) {
       if (node.type === 'checkbox') node.checked = node.getAttribute('checked')
       else node.value = node.defaultValue
@@ -51,12 +64,73 @@ export class Form {
     return true
   }
 
-  change = (arg) => {
+  treeApply = (_, __, [param]) => {
+    return (new Form(getRoot(root))).tree
+  }
+  treeGet = (_, name) => {
+    const path = [...this.path, name]
+    const fullName = nameFromPath(path)
+    const node = this.root.elements[fullName]
+    if (node) {
+      return this.values[fullName]
+    } else {
+      return (new Form(this.root, path)).tree
+    }
+  }
+  treeSet = (_, name, value) => {
+    const path = [...this.path, name]
+    const fullName = nameFromPath(path)
+    const node = this.root.elements[fullName]
+    if (node) {
+      this.values[fullName] = value
+    } else {
+      // What to set when partial match in a tree?
+      // Maybe set the values of the first match up to that path?
+      // Set values of all matches? Do it by function like in classes case in memelib?
+      // return this.tree(name)
+    }
+    return true
+  }
+  treeDelete = (_, name) => {
+    const path = [...this.path, name]
+    const fullName = nameFromPath(path)
+    const node = this.root.elements[fullName]
+    if (node) {
+      delete this.values[fullName]
+    } else {
+      // What to delete when partial match in a tree?
+      // Same issue as in treeSet
+    }
+  }
+
+  leafApply = (_, __, [root]) => {
+    return (new Form(getRoot(root))).leaf
+  }
+  leafGet = (_, name) => {
+    //TODO: this, set and delete should also set by ID like form.elements.something because id and name seem to be interchangeable in form.elements. But which one comes first!?
+    const node = this.root.querySelector(`[name$="[${CSS.escape(name)}]"]`)
+    const nodeInElements = Array.from(this.root.elements).includes(node)
+    if (nodeInElements) return this.values[node.name]
+  }
+  leafSet = (_, name, value) => {
+    const node = this.root.querySelector(`[name$="[${CSS.escape(name)}]"]`)
+    const nodeInElements = Array.from(this.root.elements).includes(node)
+    if (nodeInElements) this.values[node.name] = value
+    return true
+  }
+  leafDelete = (_, name) => {
+    const node = this.root.querySelector(`[name$="[${CSS.escape(name)}]"]`)
+    const nodeInElements = Array.from(this.root.elements).includes(node)
+    if (nodeInElements) delete this.values[node.name]
+    return true
+  }
+
+  dispatch = (arg) => {
     const root = getRoot(arg)
     if (root) {
-      return (new Form(root)).change
+      return (new Form(root)).dispatch
     }
-    this.root.dispatchEvent(this.event || Form.event)
+    this.root.dispatchEvent(Form.event)
   }
 
   batch = (callback) => {
@@ -65,11 +139,8 @@ export class Form {
       return (new Form(root)).batch
     }
 
-    const event = this.event
-    this.event = null // Disable events while running batch.
     callback(this.values)
     this.root.dispatchEvent(event || Form.event)
-    this.event = event
   }
 
   listen = (...args) => {
@@ -88,6 +159,14 @@ export class Form {
       }
     }
   }
+
+  ignore = (...events) => {
+    //TODO: ignore events with these names. This would require gathering callbacks per event name somewhere in listen function and ignoring each of those by event name here.
+  }
+}
+
+function nameFromPath(path) {
+  return path.map((part, i) => i === 0 ? part : `[${part}]`).join('')
 }
 
 function getRoot(root) {
@@ -97,7 +176,11 @@ function getRoot(root) {
   }
 }
 
-function validateLabel(node) {
+function validateNode(node) {
+  if (!node) {
+    console.error(node)
+    throw new Error(`Node node?`, {cause: node});
+  }
   // This is harsh, but labels are the actual law nowadays.
   const unlabelledElement = ['fieldset', 'output', 'hidden'].includes(node.type)
   const hasLabel = node.labels?.length
@@ -113,6 +196,9 @@ function validateLabel(node) {
 ///////////////////////
 
 export const values = (new Form()).values
-export const change = (new Form()).change
+export const tree = (new Form()).tree
+export const leaf = (new Form()).leaf
+export const dispatch = (new Form()).dispatch
 export const batch = (new Form()).batch
 export const listen = (new Form()).listen
+export const ignore = (new Form()).ignore

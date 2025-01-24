@@ -23,8 +23,20 @@
     <label for="number">Number</label>
     <input id="number" type="number" name="number" value="10" step="10">
     <input type="hidden" name="expression" value="true">
-    <output for="number" name="numberout">000</output>
+    <output for="number" name="result">000</output>
   </fieldset>
+
+  <h2>Rows</h2>
+  <div class="rows">
+    <fieldset class="row">
+      <label for="row-0-sum">Row 1 sum</label>
+      <input id="row-0-sum" type="number" name="rows[0][sum]" value="">
+    </fieldset>
+    <fieldset class="row">
+      <label for="row-2-sum">Row 2 sum</label>
+      <input id="row-2-sum" type="number" name="rows[1][sum]" value="">
+    </fieldset>
+  </div>
 </form>
 
 
