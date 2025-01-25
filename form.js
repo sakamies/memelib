@@ -100,22 +100,27 @@ export class Form {
     return (new Form(getRoot(root))).leaf
   }
   leafGet = (_, name) => {
-    //TODO: This should work with id or name just like form.elements.
-    //TODO: this should work with multiple elements just like all the other methods.
-    const node = this.root.querySelector(`[name$="[${CSS.escape(name)}]"]`)
-    const nodeInElements = Array.from(this.root.elements).includes(node)
-    if (nodeInElements) return this.values[node.name]
+    if (name === 'length') {
+      //TODO: make length as name work
+    }
+    let names = Object.getOwnPropertyNames(this.root.elements)
+    names = names.filter(key => key.endsWith('[' + name + ']'))
+    if (names.length === 1) {
+      return this.values[names[0]]
+    } else {
+      return names.flatMap(name => this.values[name])
+    }
   }
   leafSet = (_, name, value) => {
-    const node = this.root.querySelector(`[name$="[${CSS.escape(name)}]"]`)
-    const nodeInElements = Array.from(this.root.elements).includes(node)
-    if (nodeInElements) this.values[node.name] = value
+    let names = Object.getOwnPropertyNames(this.root.elements)
+    names = names.filter(key => key.endsWith('[' + name + ']'))
+    names.forEach(name => this.values[name] = value)
     return true
   }
   leafDelete = (_, name) => {
-    const node = this.root.querySelector(`[name$="[${CSS.escape(name)}]"]`)
-    const nodeInElements = Array.from(this.root.elements).includes(node)
-    if (nodeInElements) delete this.values[node.name]
+    let names = Object.getOwnPropertyNames(this.root.elements)
+    names = names.filter(key => key.endsWith('[' + name + ']'))
+    names.forEach(name => delete this.values[name])
     return true
   }
 
