@@ -52,7 +52,7 @@ export class Form {
   valuesDelete = (_, name) => {
     const node = this.root.elements[name]
     validate(node)
-    node.remove()
+    del(node)
     return true
   }
 
@@ -200,6 +200,12 @@ function set(node, value) {
     if (node.type === 'checkbox') node.checked = value
     else node.value = value
   }
+}
+
+function del(node) {
+  const nodes = node instanceof RadioNodeList && Array.from(node)
+  if (nodes) return nodes.forEach((n, i) => del(n))
+  node.remove()
 }
 
 function nameFromPath(path) {
