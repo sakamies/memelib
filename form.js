@@ -9,14 +9,6 @@ export class Form {
     this.root = getRoot(root) || document.forms[0]
     this.path = path || []
 
-    // this.value = new Proxy(function value(){}, {
-    //   apply: this.valueApply,
-    //   get: this.valueGet,
-    //   has: this.valueHas,
-    //   set: this.valueSet,
-    //   deleteProperty: this.valueDelete,
-    // })
-
     this.values = new Proxy(function values(){}, {
       apply: this.valuesApply,
       get: this.valuesGet,
@@ -43,18 +35,6 @@ export class Form {
     })
   }
 
-  // valueApply = (_, __, [root]) => {
-  //   return (new Form(getRoot(root))).value
-  // }
-  // valueGet = (_, name) => {
-  //   name = CSS.escape(name)
-  //   const node = this.root.querySelector(`[id="${name}"],[name="${name}"]`)
-  //   validate(node)
-  //   return valueOf(node)
-  // }
-
-
-  //TODO: maybe do the same as FormData api. Have value.namehere and values.namehere. Values can have fancier logic, value always returns one value with the same logic as formData.get('namehere')
   valuesApply = (_, __, [root]) => {
     return (new Form(getRoot(root))).values
   }
