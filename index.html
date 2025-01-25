@@ -16,6 +16,12 @@
 
 <form name="example">
   <p>
+    <input id="radio1" type="radio" name="radios" value="1">
+    <label for="radio1">Radio 1</label>
+    <input id="radio2" type="radio" name="radios" value="2">
+    <label for="radio2">Radio 2</label>
+  </p>
+  <p>
     <input id="checkbox1" type="checkbox" name="checkbox" value="iamchecked">
     <label for="checkbox1">Checkbox</label>
   </p>
@@ -37,6 +43,21 @@
       <input id="row-2-sum" type="number" name="rows[1][sum]" value="">
     </fieldset>
   </div>
+
+  <p hidden>
+    <!-- Multiple inputs with the same name -->
+    <input type="hidden" name="multi" value="0">
+    <input type="hidden" name="multi" value="1">
+    <input type="hidden" name="multi" value="2">
+  </p>
+  <p hidden>
+    <!-- Checkboxes with fallback value -->
+    <input type="hidden" name="multicheck" value="none">
+    <input id="multicheck-one" type="checkbox" name="multicheck" value="one" checked>
+    <label for="multicheck-one">One</label>
+    <input id="multicheck-some" type="checkbox" name="multicheck" value="some">
+    <label for="multicheck-some">Some</label>
+  </p>
 </form>
 
 

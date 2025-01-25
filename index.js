@@ -2,6 +2,9 @@
 console.group("Let's meme!")
 import { id, classes, form } from './memelib.js'
 
+//Let's make these global so you can play in devtools console.
+window.id = id; window.classes = classes, window.form = form;
+
 // Use whatever names you want by destructuring.
 //import { id: myid } from './memelib.js'
 
@@ -83,9 +86,12 @@ console.groupEnd()
 console.group('Form')
 
 import { Form } from './form.js'
-const { values, tree, leaf, listen, ignore, dispatch, batch } = new Form()
 //Param to Form class is HTMLFormElement, HTMLFieldSetElement or whatever document.forms[key] accepts as key, same applies when scoping any of the Form methods.
-// If you only have one form in the document, calling new Form() without a parameter chooses that.
+// Without a parameter, new Form() gets the first form in the document.
+const { values, tree, leaf, listen, ignore, dispatch, batch } = new Form()
+
+//Let's make these global so you can play in devtools console.
+window.values = values; window.tree = tree; window.leaf = leaf;
 
 // Get value of a form element. Same as form.elements.result.value.
 console.log('values.result', values.result)
@@ -102,11 +108,22 @@ values.result = null
 // Set a value in a fieldset.
 values.fieldsettest.result
 
-// For checkboxes, you get the value if the checkbox is checked, just like FormData does.
-// But you set checkbox checked state, not value.
+// You get checkbox value only if checked, just like FormData does.
 console.log('unchecked checkbox returns null', values.checkbox1)
+// You set checkbox .checked property with truthy/falsy value.
+// Use plain old DOM methods to change checkbox value attribute.
 values.checkbox1 = true
 console.log('checked checkbox returns value', values.checkbox1)
+
+// There may be multiple inputs with the same name.
+console.log('values.multi', values.multi)
+// Set their values with an array.
+values.multi = [1, 2, 3]
+
+// A checkbox with a fallback value for unchecked state is common
+console.log('multicheck', values.multicheck)
+// Get a specific checkbox by using its id
+console.log('multicheck-one', values['multicheck-one'])
 
 // Delete whole input.
 // delete values.result

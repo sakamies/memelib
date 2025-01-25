@@ -9,6 +9,14 @@ export class Form {
     this.root = getRoot(root) || document.forms[0]
     this.path = path || []
 
+    // this.value = new Proxy(function value(){}, {
+    //   apply: this.valueApply,
+    //   get: this.valueGet,
+    //   has: this.valueHas,
+    //   set: this.valueSet,
+    //   deleteProperty: this.valueDelete,
+    // })
+
     this.values = new Proxy(function values(){}, {
       apply: this.valuesApply,
       get: this.valuesGet,
@@ -17,6 +25,7 @@ export class Form {
       deleteProperty: this.valuesDelete,
     })
 
+    //TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
     this.tree = new Proxy(function tree(){}, {
       apply: this.treeApply,
       get: this.treeGet,
@@ -34,29 +43,30 @@ export class Form {
     })
   }
 
+  // valueApply = (_, __, [root]) => {
+  //   return (new Form(getRoot(root))).value
+  // }
+  // valueGet = (_, name) => {
+  //   name = CSS.escape(name)
+  //   const node = this.root.querySelector(`[id="${name}"],[name="${name}"]`)
+  //   validate(node)
+  //   return valueOf(node)
+  // }
+
+
+  //TODO: maybe do the same as FormData api. Have value.namehere and values.namehere. Values can have fancier logic, value always returns one value with the same logic as formData.get('namehere')
   valuesApply = (_, __, [root]) => {
     return (new Form(getRoot(root))).values
   }
   valuesGet = (_, name) => {
-    //TODO: some way to get numbers?
     const node = this.root.elements[name]
     validate(node)
-    //if (node.valueAsDate !== null) return node.valueAsDate
-    //if (node.valueAsNumber !== NaN) return node.valueAsNumber
-    if (node.type === 'checkbox') return node.checked ? node.value : null
-    if (node.type === 'fieldset') return (new Form(node)).values
-    return node.value
+    return valueOf(node)
   }
   valuesSet = (_, name, value) => {
     const node = this.root.elements[name]
     validate(node)
-    if (value === null) {
-      if (node.type === 'checkbox') node.checked = node.getAttribute('checked')
-      else node.value = node.defaultValue
-    } else {
-      if (node.type === 'checkbox') node.checked = value
-      else node.value = value
-    }
+    set(node, value)
     return true
   }
   valuesDelete = (_, name) => {
@@ -86,10 +96,10 @@ export class Form {
     if (node) {
       this.values[fullName] = value
     } else {
-      // What to set when partial match in a tree?
-      // Maybe set the values of the first match up to that path?
-      // Set values of all matches? Do it by function like in classes case in memelib?
-      // return this.tree(name)
+      //TODO:
+      // get all nodes that match this path
+      // if value is an array, set by that
+      // if value is string, set all to that string
     }
     return true
   }
@@ -100,8 +110,9 @@ export class Form {
     if (node) {
       delete this.values[fullName]
     } else {
-      // What to delete when partial match in a tree?
-      // Same issue as in treeSet
+      //TODO:
+      // get all nodes that match this path
+      // delete all those nodes
     }
   }
 
@@ -109,7 +120,8 @@ export class Form {
     return (new Form(getRoot(root))).leaf
   }
   leafGet = (_, name) => {
-    //TODO: this, set and delete should also set by ID like form.elements.something because id and name seem to be interchangeable in form.elements. But which one comes first!?
+    //TODO: This should work with id or name just like form.elements.
+    //TODO: this should work with multiple elements just like all the other methods.
     const node = this.root.querySelector(`[name$="[${CSS.escape(name)}]"]`)
     const nodeInElements = Array.from(this.root.elements).includes(node)
     if (nodeInElements) return this.values[node.name]
@@ -167,6 +179,49 @@ export class Form {
   }
 }
 
+function validate(node) {
+  if (!node) {
+    throw new Error(`Node missing.`, {cause: node});
+  }
+  if (node instanceof RadioNodeList) {
+    return node.forEach(validate)
+  }
+  const unlabelledElement = ['fieldset', 'output', 'hidden'].includes(node.type)
+  const hasLabel = node.labels?.length
+  const hasAria = node.getAttribute('aria-label') || node.getAttribute('aria-labelledby')
+  if (hasLabel || hasAria || unlabelledElement) {
+    //Right on!
+  } else {
+    console.error('Missing label for ', node)
+  }
+}
+
+function valueOf(node) {
+  const nodes = node instanceof RadioNodeList && Array.from(node)
+  if (nodes && nodes.every(node => node.type !== 'radio')) {
+    const values = nodes.map(n => valueOf(n))
+    return values
+  }
+  // if (node.valueAsDate !== null) return node.valueAsDate
+  // if (node.valueAsNumber !== NaN) return node.valueAsNumber
+  if (node.type === 'checkbox') return node.checked ? node.value : null
+  if (node.type === 'fieldset') return (new Form(node)).values
+  return node.value
+}
+
+function set(node, value) {
+  if (node instanceof RadioNodeList && Array.isArray(value)) {
+    Array.from(node).map((n, i) => set(n, value[i]))
+  }
+  if (value === null) {
+    if (node.type === 'checkbox') node.checked = node.getAttribute('checked')
+    else node.value = node.defaultValue
+  } else {
+    if (node.type === 'checkbox') node.checked = value
+    else node.value = value
+  }
+}
+
 function nameFromPath(path) {
   return path.map((part, i) => i === 0 ? part : `[${part}]`).join('')
 }
@@ -175,23 +230,6 @@ function getRoot(root) {
   root = document.forms[root] || root
   if (root instanceof HTMLFormElement || root instanceof HTMLFieldSetElement) {
     return root
-  }
-}
-
-function validate(node) {
-  if (!node) {
-    console.error(node)
-    throw new Error(`Node node?`, {cause: node});
-  }
-  // This is harsh, but labels are the actual law nowadays.
-  const unlabelledElement = ['fieldset', 'output', 'hidden'].includes(node.type)
-  const hasLabel = node.labels?.length
-  const hasAria = node.getAttribute('aria-label') || node.getAttribute('aria-labelledby')
-  if (hasLabel || hasAria || unlabelledElement) {
-    //Right on!
-  } else {
-    console.error(node)
-    throw new Error(`Missing <label>`, {cause: node});
   }
 }
 
