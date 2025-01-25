@@ -40,7 +40,7 @@ export class Form {
   valuesGet = (_, name) => {
     //TODO: some way to get numbers?
     const node = this.root.elements[name]
-    validateNode(node)
+    validate(node)
     //if (node.valueAsDate !== null) return node.valueAsDate
     //if (node.valueAsNumber !== NaN) return node.valueAsNumber
     if (node.type === 'checkbox') return node.checked ? node.value : null
@@ -49,18 +49,20 @@ export class Form {
   }
   valuesSet = (_, name, value) => {
     const node = this.root.elements[name]
-    validateNode(node)
-    if (node.type === 'checkbox') node.checked = value
-    else node.value = value
+    validate(node)
+    if (value === null) {
+      if (node.type === 'checkbox') node.checked = node.getAttribute('checked')
+      else node.value = node.defaultValue
+    } else {
+      if (node.type === 'checkbox') node.checked = value
+      else node.value = value
+    }
     return true
   }
   valuesDelete = (_, name) => {
     const node = this.root.elements[name]
-    validateNode(node)
-    if (node) {
-      if (node.type === 'checkbox') node.checked = node.getAttribute('checked')
-      else node.value = node.defaultValue
-    }
+    validate(node)
+    node.remove()
     return true
   }
 
@@ -176,7 +178,7 @@ function getRoot(root) {
   }
 }
 
-function validateNode(node) {
+function validate(node) {
   if (!node) {
     console.error(node)
     throw new Error(`Node node?`, {cause: node});

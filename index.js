@@ -2,7 +2,7 @@
 console.group("Let's meme!")
 import { id, classes, form } from './memelib.js'
 
-// Use whatever names you want by destructuring
+// Use whatever names you want by destructuring.
 //import { id: myid } from './memelib.js'
 
 console.groupEnd()
@@ -11,20 +11,19 @@ console.groupEnd()
 
 console.group('id')
 
-// Check if element exists by id. Same as testing id.test1 to be truthy though
+// Check if element exists by id. Same as testing id.test1 to be truthy though.
 console.log('element with id test1?', 'test1' in id)
 
-// Get element by id
+// Get element by id.
 console.log('id test1', id.test1)
 
-// Set textContent
+// Set textContent.
 id.test1 = 'Text content'
 
-// Set innerHTML with square brackets because it's heavier and square brackets look heavier
+// Set innerHTML with square brackets because it's heavier and square brackets look heavier.
 id.test2 = ['<b>HTML</b> content']
 
-// Remove element
-//TODO: maybe delete should clear node contents in id and classes? Would align with form behaviour and does not bring any convenience over node.remove(). On the other hand it's just as easy to go id.test1 = ''. I kinda want this not to be a dom manipulation library. More of a value manipulation library.
+// Remove element.
 delete id.removeme
 
 console.groupEnd()
@@ -49,7 +48,7 @@ classes.test = (node, i) => ['Test <b>' + (i+2) + '</b>']
 const scopedClasses = classes(id.scope)
 console.log('scoped classes', scopedClasses.test)
 
-// Delete all elements of a class
+// Delete all elements of a class.
 delete classes.removeus
 
 console.groupEnd()
@@ -60,17 +59,20 @@ console.groupEnd()
 
 console.group('form')
 
-// Check if element exists
+// Check if element exists.
 console.log('example form exists?', 'example' in form)
 
-// Get element by name, id, or index. Same as document.forms.example
+// Get element by name, id, or index. Same as document.forms.example.
 console.log('form named example', form.example)
 
 // TODO: Set form values with FormData? Dunno how yet
 // form.example = [['key1', 'value'], ['key2', 'value']]
 
-// Reset form
-delete form.example
+// Reset form by setting null
+// form.example = null
+
+// Delete whole form
+// delete form.example
 
 console.groupEnd()
 
@@ -94,6 +96,9 @@ console.log('values.fieldsettest.number', values.fieldsettest.result)
 // Set value of a form element.
 values.result = 0
 
+// Set null to reset value to input.defaultValue.
+values.result = null
+
 // Set a value in a fieldset.
 values.fieldsettest.result
 
@@ -103,21 +108,21 @@ console.log('unchecked checkbox returns null', values.checkbox1)
 values.checkbox1 = true
 console.log('checked checkbox returns value', values.checkbox1)
 
-// Reset value to input.defaultValue
-delete values.result
+// Delete whole input.
+// delete values.result
 
-// Get & set values named by object hierarchy
+// Get & set values named by object hierarchy.
 tree.rows[0].sum = '400'
 console.log('rows[0][sum]', tree.rows[0].sum)
 
-// Get & set leaves of object hierarchy
+// Get & set leaves of object hierarchy.
 classes.row.forEach((row, i) => {
   row = leaf(row) //Row is a fieldset, so let's scope leaf()
   row.sum = i * 300
   console.log(`row ${i} > ........[sum]`, row.sum)
 })
 
-// Listen for input & change events
+// Listen for input & change events.
 listen(values => {
   values.expression = parseInt(values.number) * 3 === 30
   if (values.expression === 'true') {
@@ -127,25 +132,25 @@ listen(values => {
   }
 })
 
-// Set the events you want to listen to
+// Set the events you want to listen to.
 listen('my-custom-event', (values) => {values.mood = 'Bueno'})
 
-// Manually send change event after setting values
+// Manually send change event after setting values.
 values.result = 10
 dispatch()
 
-// Set mutliple values and send a change event after the function is done
+// Set mutliple values and send a change event after the function is done.
 batch(values => {
   values.number = 30
   values.number = 20
   values.number = 10
 })
 
-// Scopes work as usual
-values(form.example) // get new values scoped to that form
-values(form.example.elements.fieldsettest) // you can also scope to fieldsets
-batch(form.example) // get a new batch function for that form
-listen(form.example) // get a new listen function for that form
-dispatch(form.example) // get a new dispatch function for that form
+// Scopes work as usual.
+values(form.example) // Get new values scoped to that form.
+values(form.example.elements.fieldsettest) // You can also scope to fieldsets.
+batch(form.example) // Get a new batch function for that form.
+listen(form.example) // Get a new listen function for that form.
+dispatch(form.example) // Get a new dispatch function for that form.
 
 console.groupEnd()

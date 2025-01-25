@@ -1,6 +1,10 @@
+//TODO: some shortcut for .querySelector() Shouldn't be a part of memelib probably. Just your regular querySelector but shorter.
+
 export class Meme {
   constructor(root) {
     this.root = root || document
+
+    //this.tag = maybe?
 
     this.id = new Proxy(Function(), {
       get: this.idGet,
@@ -92,11 +96,16 @@ export class Meme {
     if (this.root.contains(node)) return node
   }
   formSet = (_, name, data) => {
+    const node = document.forms[name]
+    if (this.root.contains(node)) {
+      if (data === null) node.reset()
+    }
     //TODO: set form entries with given data somehow?
+  return true
   }
   formDelete = (_, name) => {
     const node = document.forms[name]
-    if (this.root.contains(node)) node.reset()
+    if (this.root.contains(node)) node.remove()
     return true
   }
 
