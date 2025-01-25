@@ -94,10 +94,13 @@ const { values, tree, leaf, listen, ignore, dispatch, batch } = new Form()
 window.values = values; window.tree = tree; window.leaf = leaf;
 
 // Get value of a form element. Same as form.elements.result.value.
-console.log('values.result', values.result)
+console.log('values.result is', values.result)
+
+//TODO: make length as name work
+// console.log('values.result is', values.length)
 
 // A fieldset gives you a new values() scoped to that fieldset.
-console.log('values.fieldsettest.number', values.fieldsettest.result)
+console.log('values.fieldsettest.number is', values.fieldsettest.result)
 
 // Set value of a form element.
 values.result = 0
@@ -105,38 +108,45 @@ values.result = 0
 // Set null to reset value to input.defaultValue.
 values.result = null
 
+// You can delete the whole node if needed.
+// delete values.result
+
 // Set a value in a fieldset.
 values.fieldsettest.result
 
-// You get checkbox value only if checked, just like FormData does.
-console.log('unchecked checkbox returns null', values.checkbox1)
-// You set checkbox .checked property with truthy/falsy value.
-// Use plain old DOM methods to change checkbox value attribute.
-values.checkbox1 = true
-console.log('checked checkbox returns value', values.checkbox1)
+// Radios work the same as form.elements.radio.value = x
+values.radios = 1
 
-// There may be multiple inputs with the same name.
-console.log('values.multi', values.multi)
-// Set their values with an array.
-values.multi = [1, 2, 3]
+// You get checkbox value if checked, just like FormData does.
+// Null if not checked.
+console.log('unchecked checkbox returns null:', values.checkbox1)
+
+// You set checkbox .checked property with truthy/falsy value.
+// Use plain old DOM methods to change actual checkbox value property/attribute.
+values.checkbox = true
+console.log('checked checkbox returns value:', values.checkbox1)
 
 // A checkbox with a fallback value for unchecked state is common
-console.log('multicheck', values.multicheck)
-// Get a specific checkbox by using its id
-console.log('multicheck-one', values['multicheck-one'])
+console.log('values.multicheck returns all:', values.multicheck)
 
-// Delete whole input.
-// delete values.result
+// Get a specific checkbox by using its id
+console.log('values["multicheck-one"], single checkbox by id:', values['multicheck-one'])
+
+// There may be multiple inputs with the same name.
+console.log('values.multi returns all:', values.multi)
+// Set their values with an array.
+values.multi = [3, 2, 1]
+console.log('values.multi changed to:', values.multi)
 
 // Get & set values named by object hierarchy.
 tree.rows[0].sum = '400'
-console.log('rows[0][sum]', tree.rows[0].sum)
+console.log('tree.rows[0].sum → rows[0][sum] value:', tree.rows[0].sum)
 
 // Get & set leaves of object hierarchy.
 classes.row.forEach((row, i) => {
   row = leaf(row) //Row is a fieldset, so let's scope leaf()
   row.sum = i * 300
-  console.log(`row ${i} > ........[sum]`, row.sum)
+  console.log(`row ${i} leaf sum:`, row.sum)
 })
 
 // Listen for input & change events.

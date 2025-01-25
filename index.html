@@ -5,6 +5,7 @@
   Get, set and manipulate elements and forms super easy.
 </p>
 
+<h2>IDs & classes</h2>
 <div id="scope">
   <p id="test1">Test 1</p>
   <p id="test2">Test 2</p>
@@ -15,16 +16,8 @@
 </div>
 
 <form name="example">
-  <p>
-    <input id="radio1" type="radio" name="radios" value="1">
-    <label for="radio1">Radio 1</label>
-    <input id="radio2" type="radio" name="radios" value="2">
-    <label for="radio2">Radio 2</label>
-  </p>
-  <p>
-    <input id="checkbox1" type="checkbox" name="checkbox" value="iamchecked">
-    <label for="checkbox1">Checkbox</label>
-  </p>
+  <input type="hidden" name="length" value="TODO: make length as name work">
+  <h2>Basic inputs</h2>
   <fieldset name="fieldsettest">
     <label for="number">Number</label>
     <input id="number" type="number" name="number" value="10" step="10">
@@ -32,7 +25,37 @@
     <output for="number" name="result">000</output>
   </fieldset>
 
+  <h2>Radios</h2>
+  <fieldset>
+    <input id="radio1" type="radio" name="radios" value="1">
+    <label for="radio1">Radio 1</label>
+    <input id="radio2" type="radio" name="radios" value="2">
+    <label for="radio2">Radio 2</label>
+  </fieldset>
+
+  <h2>Checkboxes</h2>
+  <p>
+    <input id="checkbox1" type="checkbox" name="checkbox" value="iamchecked">
+    <label for="checkbox1">One checkbox</label>
+  </p>
+  <p>Multiple checkboxes with hidden input for fallback value when none are checked.</p>
+  <fieldset>
+    <input type="hidden" name="multicheck" value="none">
+    <input id="multicheck-one" type="checkbox" name="multicheck" value="one" checked>
+    <label for="multicheck-one">One</label>
+    <input id="multicheck-some" type="checkbox" name="multicheck" value="some">
+    <label for="multicheck-some">Some</label>
+  </fieldset>
+
+  <h2>Hidden inputs</h2>
+  <p>Multiple inputs with the same name.</p>
+  <!-- Multiple inputs with the same name -->
+  <input type="hidden" name="multi" value="0">
+  <input type="hidden" name="multi" value="1">
+  <input type="hidden" name="multi" value="2">
+
   <h2>Rows</h2>
+  <p>Object hierarchies as input element names.</p>
   <div class="rows">
     <fieldset class="row">
       <label for="row-0-sum">Row 1 sum</label>
@@ -43,21 +66,6 @@
       <input id="row-2-sum" type="number" name="rows[1][sum]" value="">
     </fieldset>
   </div>
-
-  <p hidden>
-    <!-- Multiple inputs with the same name -->
-    <input type="hidden" name="multi" value="0">
-    <input type="hidden" name="multi" value="1">
-    <input type="hidden" name="multi" value="2">
-  </p>
-  <p hidden>
-    <!-- Checkboxes with fallback value -->
-    <input type="hidden" name="multicheck" value="none">
-    <input id="multicheck-one" type="checkbox" name="multicheck" value="one" checked>
-    <label for="multicheck-one">One</label>
-    <input id="multicheck-some" type="checkbox" name="multicheck" value="some">
-    <label for="multicheck-some">Some</label>
-  </p>
 </form>
 
 

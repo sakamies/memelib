@@ -1,8 +1,13 @@
 body {
   font-family: monospace;
   line-height: 1.33;
-  display: grid;
-  place-content: center;
+  max-width: 100%;
+  max-width: 30rem;
+  margin-inline: auto;
+  padding: 1em;
+}
+fieldset {
+  margin: 0 0 1em 0;
 }
 input {
   font: inherit;

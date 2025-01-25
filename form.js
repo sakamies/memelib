@@ -1,3 +1,11 @@
+/*TODO:
+  since form.elements has a length property, either that case needs special handling
+  like values.length for <input name="length"> would need something like if (name === 'length')
+  or there needs to be a general handling that doesn't access stuff directly with form.elements
+*/
+
+//TODO: labels to go with values? Mostly so you can delete labels along with your inputs if you need to. Though if you know your input id or name, this would be kinda moot so not sure it's really needed.
+
 export class Form {
   static event = new Event('change', {bubbles: true})
   static events = ['input', 'change']
