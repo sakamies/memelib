@@ -1,5 +1,5 @@
 
-console.group("Let's meme!")
+console.group("Memelib")
 import { id, classes, form } from './memelib.js'
 
 //Let's make these global so you can play in devtools console.
@@ -7,8 +7,6 @@ window.id = id; window.classes = classes, window.form = form;
 
 // Use whatever names you want by destructuring.
 //import { id: myid } from './memelib.js'
-
-console.groupEnd()
 
 
 
@@ -78,13 +76,17 @@ console.log('form named example', form.example)
 // delete form.example
 
 console.groupEnd()
+console.groupEnd()
 
 
+
+////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////////////////////////////////////////
 
 
 
 console.group('Form')
-
 import { Form } from './form.js'
 //Param to Form class is HTMLFormElement, HTMLFieldSetElement or whatever document.forms[key] accepts as key, same applies when scoping any of the Form methods.
 // Without a parameter, new Form() gets the first form in the document.
@@ -93,14 +95,21 @@ const { values, tree, leaf, listen, ignore, dispatch, batch } = new Form()
 //Let's make these global so you can play in devtools console.
 window.values = values; window.tree = tree; window.leaf = leaf;
 
+
+
+
+
+console.group('values')
+
 // Get value of a form element. Same as form.elements.result.value.
-console.log('values.result is', values.result)
+console.log('values.result:', values.result)
 
 //TODO: make length as name work
 // console.log('values.result is', values.length)
 
-// A fieldset gives you a new values() scoped to that fieldset.
-console.log('values.fieldsettest.number is', values.fieldsettest.result)
+// You can get values inside fieldsets too
+// Same as scoped values like this: values(form.example.elements.fieldsettest).result
+console.log('values.fieldsettest.result:', values.fieldsettest.result)
 
 // Set value of a form element.
 values.result = 0
@@ -138,6 +147,12 @@ console.log('values.multi returns all:', values.multi)
 values.multi = [3, 2, 1]
 console.log('values.multi changed to:', values.multi)
 
+
+
+
+
+console.group('tree & leaf')
+
 // Get & set values named by object hierarchy.
 tree.rows[0].sum = '400'
 console.log('tree.rows[0].sum → rows[0][sum] value:', tree.rows[0].sum)
@@ -148,6 +163,14 @@ classes.row.forEach((row, i) => {
   row.sum = i * 300
   console.log(`row ${i} leaf sum:`, row.sum)
 })
+
+console.groupEnd()
+
+
+
+
+
+console.group('listen, ignore, dispatch, batch')
 
 // Listen for input & change events.
 listen(values => {
@@ -180,4 +203,5 @@ batch(form.example) // Get a new batch function for that form.
 listen(form.example) // Get a new listen function for that form.
 dispatch(form.example) // Get a new dispatch function for that form.
 
+console.groupEnd()
 console.groupEnd()

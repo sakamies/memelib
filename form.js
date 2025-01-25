@@ -6,6 +6,9 @@
 
 //TODO: labels to go with values? Mostly so you can delete labels along with your inputs if you need to. Though if you know your input id or name, this would be kinda moot so not sure it's really needed.
 
+//TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
+//Same goes for values, could list all values. Though it's already easy to get FormData object for the form, so not sure how useful it would be.
+
 export class Form {
   static event = new Event('change', {bubbles: true})
   static events = ['input', 'change']
