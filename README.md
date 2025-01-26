@@ -64,7 +64,7 @@ Returns an array of elements, so `map`, `filter` etc. array methods work straigh
 ```js
 // Array.from(document.getElementsByClassName('myclass'))
 classes.myclass
-classes['myClass some-other-class']
+classes['some-funky-class']
 ```
 
 ```js
@@ -107,7 +107,7 @@ classes.myclass = (node, i) => [`Match <b>${i}</b>`]
 delete classes.myclass
 ```
 
-### Check if an element exists
+### Check if any elements that match exist
 
 ```js
 // document.getElementsByClassName('myclass')?.length
