@@ -41,7 +41,7 @@ console.log('Any elements of class test?', 'test' in classes)
 // Returns an array of elements of class, iterate with any class methods of course.
 console.log('elements class test', classes.test)
 
-// Set text as string, or html with angle brackets like id.
+// Set text as string, or html with square brackets like id.
 // Set per node text/html with a function.
 classes.test = (node, i) => ['Test <b>' + (i+2) + '</b>']
 
@@ -87,10 +87,7 @@ console.groupEnd()
 
 
 console.group('Form')
-import { Form } from './form.js'
-//Param to Form class is HTMLFormElement, HTMLFieldSetElement or whatever document.forms[key] accepts as key, same applies when scoping any of the Form methods.
-// Without a parameter, new Form() gets the first form in the document.
-const { values, tree, leaf, listen, ignore, dispatch, batch } = new Form()
+import { values, tree, leaf, listen, ignore, dispatch, batch } from './form.js'
 
 //Let's make these global so you can play in devtools console.
 window.values = values; window.tree = tree; window.leaf = leaf;
@@ -197,6 +194,7 @@ batch(values => {
 })
 
 // Scopes work as usual.
+// Param must be an HTMLFormElement, HTMLFieldSetElement or a string for document.forms[key]
 values(form.example) // Get new values scoped to that form.
 values(form.example.elements.fieldsettest) // You can also scope to fieldsets.
 batch(form.example) // Get a new batch function for that form.

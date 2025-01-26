@@ -1,64 +1,184 @@
 # Memelib
 
-First off, import all the parts, then on to the good stuff.
+A thin convenience on top of native DOM element methods to get and set elements and their content.
+
+Tries to make common operations super easy and nothing more. Many DOM element are already really nice, no need to fudge with them.
+
+Sorry about the name. Started out as a joke but turned out actually useful.
+
+To get started, put memelib.js in your project and import what you need.
 
 ```js
 import { id, classes, form } from './memelib.js'
 ```
 
-Let's start simple. Every day I need to get elements with `document.getElementById('myid')`. For historical reasons, browsers add every id as a property on the window object. So `document.getElementById('myid')` there could also be `window.myid`. I love that! Not very safe though, because the window object has more than 200 properties in most browsers. You might get naming collisions and in those cases the built in properties win. So how about we import a little helper so we can do `id.myid` to safely get an element with id="myid".
+_The first commented out line in the code examples shows what's going on under the hood or how you'd do the same thing with plain old javascript._
 
-Similar case for classes. The untold times of typing `element.querySelectorAll('.myclass')` or the oldschool `document.getElementsByClassName('myclass')`. Nothing wrong with those, but `classes.myclass` is a nice way to get an array of elements with that class. The property name can be anything that `document.getElementsByClassName` accepts as a parameter.
+## `id`
 
-Now then, what's the most common operation you do with your nodes? For me it's setting some text content. Let's say you do `id.myid = 'text'` to set the `textContent` of that node. Setting `innerHTML` is almost as common, so let's do that with square brackets like `id.myid = ['<b>text</b>']`. I know that's an array, but I think it looks like a nice brick of html, so let's run. For classes you can of course set the contents of all matches the same way by doing `classes.myclass = 'text'`.
-
-Often times I need to iterate over a bunch of elements and set their value. Let's loop and set values all in one by assigning a function. `classes.myclass = (node, i) => 'Node ' + i`. Exactly the same as `document.querySelectorAll('myclass').forEach((node, i) => node.textContent = 'Node ' + i)`, just a little shorter. Returning a string or an array from your callback function for textContent vs innerHTML works same as before.
-
-Removing elements hasn't been that common for me, but let's make that more fun. I've always liked the `delete` keyword, but had very little use for it ever. `delete id.myid` calls the `element.remove()` method.
-
-## Forms
-
-Then there's forms. Most of my career I've used `querySelector` to get at forms, but forms have had a very similar super convenient and flexible property accessor type api as id's on `window` for ages. `document.forms.myform` gets you a form that either has `id="myform"` or `name="myform"`. A shortcut for that could be `form.myform`.
-
-Let's use the delete keyword `delete form.myform` to reset the form.
-
-Set a value to the to set the whole form state at once. `form.myform = [data here]`. Not quite sure how that data should be set yet. For individual values though, here comes the Form class.
-
-Grab the parts and initialize with a form.
+### Get element by id[^1]
 
 ```js
-import { Form } from './form.js'
-const { values, listen, change, batch } = new Form(form.myform)
+// document.getElementByID('simpleid')
+id.simpleid
+id['some-funky-id']
 ```
 
-Values lets you get and set form values like the `id` helper up there. Get a value with `values.myinput`, which again is a shortcut for plain old DOM access via properties `document.forms.myform.elements.myinput.value`. So `myinput` here can be a name or id (or even the index) of the element you're after, like in the DOM.
+### Set element text content
 
-You probably guessed setting values by now. Do `values.myinput = 'something'`. Form element values are always strings, so you'll need to do some `parseFloat` and stuff if you need to wrangle numbers and such. That's always been the case, so I'm not sure I'll include any automatic type coercion into this library. Some helpers might be nice though.
+```js
+// document.getElementByID('simpleid').textContent = 'Some Text'
+id.simpleid = 'Some text'
+id['some-funky-id'] = 'Some funky text'
+```
 
-Usually you'll react somehow to user input or value changes on forms. That's why we have `listen`, `change` and `batch`. With `listen(values => values.myinput = 'My my')`, you can listen for changes on the form and do stuff when values change. Setting a value does not send a change event by default, so you'll be safe from infinite loops.
+### Set html content
 
-If you do want to edit a form value somewhere and react to it with `listen`, run `change()` to send a change event on your form. Event types and such are configurable of course, but let's leave that be for now.
+Assign an array to set innerHTML.[^2] The array can have any number of items, they are joined as one string of html.
 
-More often though, you'll maybe want to set a bunch of values and make sure that you're not spamming change events. Use `batch(values => values.myinput = 1; values.myothervalue = 2;)` to send a single change event after you're done changing a bunch of values. Same as setting individual values and running `change()` after, but batch makes sure, regardless of configuration, that it won't spam change events while running.
+```js
+// document.getElementByID('simpleid').innerHTML = '<b>Some html</b>'
+id.simpleid = ['<b>Some html</b>']
+```
 
-## The why
+### Delete an element
 
-I really like digging through all the native apis and using them with as little abstraction as possible. The DOM has just so much useful stuff built in that gets lost in history and behind libraries that abstract it all away. The two things that often that take some of the joy away are the historical baggage and verbosity due to historical baggage. Both are out of necessity, so they're not some mistake. Just sometimes they get in the way of convenience.
+```js
+// document.getElementByID('simpleid').remove()
+delete id.simpleid
+```
 
-Like the jQuerys and MooTools of old, I want a nice abstraction that's not too far from the native DOM, but is just that little bit nicer to use every day.
+### Check if an element exists
 
-My goal here is to keep everything close to the DOM and easily explainable in terms of existing DOM apis. No large abstractions that feel like magic. I mean I like some magic stuff too sometimes, but my goal is not purely convenience or shortness of code. My ideal library would make it less intimidating to start making really simple interactive web pages, but still help you expand that simple knowledge you gained to be analogous to the underlying DOM apis. Most operations should be explainable in a way like "It's that, but like this".
+```js
+// !!document.getElementByID('simpleid')
+'simpleid' in id
+```
 
-So hopefully this will become a simple, analogous to existing apis and explainable DOM library for simple html pages.
+## `classes`
 
-Check more example usage in `index.html` and `index.js`.
+### Get elements by class name
+
+Returns an array of elements, so `map`, `filter` etc. array methods work straight away.
+
+```js
+// Array.from(document.getElementsByClassName('myclass'))
+classes.myclass
+classes['myClass some-other-class']
+```
+
+```js
+for (node of classes.myclass) {...}
+// Maybe filter out nodes without children or some such.
+const nodesWithChildren = classes.myclass.filter(node => node.children.length)
+```
+
+### Set text content
+
+Set text content of all elements that match your class.
+
+```js
+// document.getElementsByClassName('myclass').forEach(node => node.textContent = 'Some text')
+classes.myclass = 'Some text'
+```
+
+### Set html content
+
+Assign an array to set innerHTML.[^2] Can have any number of elements, they are joined as one string of html.
+
+```js
+// document.getElementsByClassName('myclass').forEach(node => node.innerHTML = '<b>Some html</b>')
+classes.myclass = ['<b>Some html</b>']
+```
+
+### Set content of each match separately
+
+Assign a function. The function will get run for each match. The function gets the current matched node and its index as parameters. Set text by returning a string, html by returning an array, just like when assigning a value directly.
+
+```js
+// document.getElementsByClassName('myclass').forEach((node, i) => node.innerHTML = `Match <b>${i}</b>`)
+classes.myclass = (node, i) => [`Match <b>${i}</b>`]
+```
+
+### Delete an element
+
+```js
+// document.getElementsByClassName('myclass').forEach(node => node.remove())
+delete classes.myclass
+```
+
+### Check if an element exists
+
+```js
+// document.getElementsByClassName('myclass')?.length
+'myclass' in classes
+```
+
+## `form`
+
+### Get a named form
+
+A named form is a `<form>` with an `id` or `name` attribute.
+
+```js
+// document.forms['example']
+form.example
+```
+
+### Set form data
+
+TODO: Populating the form with data is not yet implemented.
+
+```js
+TODO: form.example = [...]
+```
+
+Assign null to reset form.
+
+```js
+form.example = null
+```
+
+### Delete form
+
+```js
+delete form.example
+```
+
+### Check if a form exists
+
+```js
+'example' in form
+```
 
 -----
 
-## Question I frequently ask myself
+## TODO: Form class and its methods.
 
-<del>Is this a joke? Dunno. Feels nice and actually useful though.</del>
+values, tree, leaf, listen, ignore, dispatch, batch
 
-NPM module? Probably not. Not sure I want to be a maintainer.
+## values
 
-Can I use this in production? I think I will, you probably shouldn't trust this yet though.
+TODO
+
+-----
+
+## Trivia
+
+1. If you need this something's messed up already, but it will work anyway. Without any escaping!
+    ```html
+    <div id="123 any cazy ÅÄů ID will work!">
+    ```
+    ```js
+    id['123 any cazy ÅÄů ID will work!']
+    ```
+
+2.  Classes uses `getElementsByClassName` internally, so you can get, set, check and delete elements that match multiple class names by adding a space between your class names. You'll get all elements with both classes.
+    ```js
+    classes['firstClass secondClass']
+    ```
+
+----
+
+[^1]: This came about when I learned that [browsers make all ids top level properties on the window object](https://stackoverflow.com/questions/3434278/do-dom-tree-elements-with-ids-become-global-properties). I wanted a safe way to access ids like that.
+[^2]: Square brackets look like brick and html feels like stacking bricks. So setting html is done by assigning with square brackets.

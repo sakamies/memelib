@@ -70,9 +70,7 @@ export class Meme {
       .filter(node => this.root.contains(node))
 
     nodes.forEach((node, i) => {
-      let content = value
-      if (typeof value === 'function') content = value(node, i)
-      set(node, content)
+      set(node, typeof value === 'function' ? value(node, i) : value)
     })
     return true
   }
@@ -112,6 +110,7 @@ export class Meme {
 }
 
 function set(node, content) {
+  //TODO: support nodes? Could actually use .append() method so the api would be more famialiar already. That would mean that an array could set text or nodes and setting html would need some other way. Maybe like a helper method like html('<b>Some html</b>', node, 'Some more <i>html</i>')
   const html = Array.isArray(content) && content.join('')
   if (html) node.innerHTML = html
   else node.textContent = String(content)
