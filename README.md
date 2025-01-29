@@ -2,7 +2,7 @@
 
 A thin convenience on top of native DOM element methods to get and set elements and their content.
 
-Tries to make common operations super easy and nothing more. Many DOM element are already really nice, no need to fudge with them.
+Tries to make common operations super easy and nothing more. Assumes you already know your way around DOM manipulation. Many DOM element are really nice, no need to fudge with them, just some helpers to write and read less code, hopefully without sacrificing understandability.
 
 Sorry about the name. Started out as a joke but turned out actually useful.
 
