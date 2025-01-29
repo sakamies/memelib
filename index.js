@@ -87,7 +87,7 @@ console.groupEnd()
 
 
 console.group('Form')
-import { value, tree, leaf, listen, ignore, dispatch, batch } from './form.js'
+import { value, tree, leaf, listen, ignore, change, batch } from './form.js'
 
 //Let's make these global so you can play in devtools console.
 window.value = value; window.tree = tree; window.leaf = leaf;
@@ -167,7 +167,7 @@ console.groupEnd()
 
 
 
-console.group('listen, ignore, dispatch, batch')
+console.group('listen, ignore, change, batch')
 
 // Listen for input & change events.
 listen(value => {
@@ -184,7 +184,7 @@ listen('my-custom-event', (value) => {value.mood = 'Bueno'})
 
 // Manually send change event after setting values.
 value.result = 10
-dispatch()
+change()
 
 // Set mutliple values and send a change event after the function is done.
 batch(value => {
@@ -199,7 +199,7 @@ value(form.example) // Get new value scoped to that form.
 value(form.example.elements.fieldsettest) // You can also scope to fieldsets.
 batch(form.example) // Get a new batch function for that form.
 listen(form.example) // Get a new listen function for that form.
-dispatch(form.example) // Get a new dispatch function for that form.
+change(form.example) // Get a new change function for that form.
 
 console.groupEnd()
 console.groupEnd()

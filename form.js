@@ -135,10 +135,10 @@ export class Form {
     return true
   }
 
-  dispatch = (arg) => {
+  change = (arg) => {
     const root = getRoot(arg)
     if (root) {
-      return (new Form(root)).dispatch
+      return (new Form(root)).change
     }
     this.root.dispatchEvent(Form.event)
   }
@@ -150,7 +150,7 @@ export class Form {
     }
 
     callback(this.value)
-    this.root.dispatchEvent(event || Form.event)
+    this.root.changeEvent(event || Form.event)
   }
 
   listen = (...args) => {
@@ -240,7 +240,7 @@ function getRoot(root) {
 export const value = (new Form()).value
 export const tree = (new Form()).tree
 export const leaf = (new Form()).leaf
-export const dispatch = (new Form()).dispatch
+export const change = (new Form()).change
 export const batch = (new Form()).batch
 export const listen = (new Form()).listen
 export const ignore = (new Form()).ignore
