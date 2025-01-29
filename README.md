@@ -8,8 +8,6 @@ Sorry about the name. Started out as a joke but turned out actually useful.
 
 To get started, put memelib.js in your project and import what you need.
 
-TODO: add a short example on the different ways to import these methods and custom name imports.
-
 ```js
 import { id, classes, form } from './memelib.js'
 ```
@@ -129,17 +127,13 @@ form.example
 
 ### Set form data
 
-TODO: Populating the form with data is not yet implemented.
-
-```js
-TODO: form.example = [...]
-```
-
-Assign null to reset form.
+Assign null to reset form. Use Form class below to set values on a form.
 
 ```js
 form.example = null
 ```
+
+Might implement some FormData-like way to set the whole form at once here, but haven't figured that out yet.
 
 ### Delete form
 
@@ -277,7 +271,7 @@ listen('third-event', evenMoreUpdates)
 
 ## ignore
 
-TODO: ignore should work just like removeEventListener
+Not implemented yet, will work as the opposite of listen. Just like removeEventListener.
 
 ## change
 
