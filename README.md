@@ -165,7 +165,7 @@ Start with the imports.
 import { value, tree, leaf, listen, ignore, change, batch } from './form.js'
 ```
 
-By default, all these functions are scoped to the first form on the page, so if you have only one form, they're easy to start with. You can scope any of them to your desired form or fieldset by invoking the method with the form or fieldset as a parameter.
+By default, all these methods are scoped to the first form on the page, so if you have only one form, they're easy to start with. You can scope any of them to your desired form or fieldset by invoking the method with the form or fieldset as a parameter.
 
 ```js
 const scopedValue = value(form.example); console.log(scopedValue.inputname);
@@ -298,6 +298,8 @@ batch(value => {
   value.numbertwo = 22
 })
 ```
+
+----
 
 # Trivia
 
