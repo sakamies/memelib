@@ -155,9 +155,9 @@ delete form.example
 
 ## TODO: Form class and its methods.
 
-values, tree, leaf, listen, ignore, dispatch, batch
+value, tree, leaf, listen, ignore, dispatch, batch
 
-## values
+## value
 
 TODO
 

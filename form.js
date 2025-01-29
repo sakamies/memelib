@@ -1,13 +1,13 @@
 /*TODO:
   since form.elements has a length property, either that case needs special handling
-  like values.length for <input name="length"> would need something like if (name === 'length')
+  like value.length for <input name="length"> would need something like if (name === 'length')
   or there needs to be a general handling that doesn't access stuff directly with form.elements
 */
 
-//TODO: labels to go with values? Mostly so you can delete labels along with your inputs if you need to. Though if you know your input id or name, this would be kinda moot so not sure it's really needed.
+//TODO: labels to go with value? Mostly so you can delete labels along with your inputs if you need to. Though if you know your input id or name, this would be kinda moot so not sure it's really needed.
 
 //TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
-//Same goes for values, could list all values. Though it's already easy to get FormData object for the form, so not sure how useful it would be.
+//Same goes for value, could list all values. Though it's already easy to get FormData object for the form, so not sure how useful it would be.
 
 export class Form {
   static event = new Event('change', {bubbles: true})
@@ -20,12 +20,12 @@ export class Form {
     this.root = getRoot(root) || document.forms[0]
     this.path = path || []
 
-    this.values = new Proxy(function values(){}, {
-      apply: this.valuesApply,
-      get: this.valuesGet,
-      has: this.valuesHas,
-      set: this.valuesSet,
-      deleteProperty: this.valuesDelete,
+    this.value = new Proxy(function value(){}, {
+      apply: this.valueApply,
+      get: this.valueGet,
+      has: this.valueHas,
+      set: this.valueSet,
+      deleteProperty: this.valueDelete,
     })
 
     //TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
@@ -46,21 +46,21 @@ export class Form {
     })
   }
 
-  valuesApply = (_, __, [root]) => {
-    return (new Form(getRoot(root))).values
+  valueApply = (_, __, [root]) => {
+    return (new Form(getRoot(root))).value
   }
-  valuesGet = (_, name) => {
+  valueGet = (_, name) => {
     const node = this.root.elements[name]
     validate(node)
     return valueOf(node)
   }
-  valuesSet = (_, name, value) => {
+  valueSet = (_, name, value) => {
     const node = this.root.elements[name]
     validate(node)
     set(node, value)
     return true
   }
-  valuesDelete = (_, name) => {
+  valueDelete = (_, name) => {
     const node = this.root.elements[name]
     validate(node)
     del(node)
@@ -75,7 +75,7 @@ export class Form {
     const fullName = nameFromPath(path)
     const node = this.root.elements[fullName]
     if (node) {
-      return this.values[fullName]
+      return this.value[fullName]
     } else {
       return (new Form(this.root, path)).tree
     }
@@ -85,7 +85,7 @@ export class Form {
     const fullName = nameFromPath(path)
     const node = this.root.elements[fullName]
     if (node) {
-      this.values[fullName] = value
+      this.value[fullName] = value
     } else {
       //TODO:
       // get all nodes that match this path
@@ -99,7 +99,7 @@ export class Form {
     const fullName = nameFromPath(path)
     const node = this.root.elements[fullName]
     if (node) {
-      delete this.values[fullName]
+      delete this.value[fullName]
     } else {
       //TODO:
       // get all nodes that match this path
@@ -117,21 +117,21 @@ export class Form {
     let names = Object.getOwnPropertyNames(this.root.elements)
     names = names.filter(key => key.endsWith('[' + name + ']'))
     if (names.length === 1) {
-      return this.values[names[0]]
+      return this.value[names[0]]
     } else {
-      return names.flatMap(name => this.values[name])
+      return names.flatMap(name => this.value[name])
     }
   }
   leafSet = (_, name, value) => {
     let names = Object.getOwnPropertyNames(this.root.elements)
     names = names.filter(key => key.endsWith('[' + name + ']'))
-    names.forEach(name => this.values[name] = value)
+    names.forEach(name => this.value[name] = value)
     return true
   }
   leafDelete = (_, name) => {
     let names = Object.getOwnPropertyNames(this.root.elements)
     names = names.filter(key => key.endsWith('[' + name + ']'))
-    names.forEach(name => delete this.values[name])
+    names.forEach(name => delete this.value[name])
     return true
   }
 
@@ -149,7 +149,7 @@ export class Form {
       return (new Form(root)).batch
     }
 
-    callback(this.values)
+    callback(this.value)
     this.root.dispatchEvent(event || Form.event)
   }
 
@@ -165,7 +165,7 @@ export class Form {
 
     for (let event of events) {
       for (let callback of callbacks) {
-        this.root.addEventListener(event, () => callback(this.values))
+        this.root.addEventListener(event, () => callback(this.value))
       }
     }
   }
@@ -201,7 +201,7 @@ function valueOf(node) {
   // if (node.valueAsDate !== null) return node.valueAsDate
   // if (node.valueAsNumber !== NaN) return node.valueAsNumber
   if (node.type === 'checkbox') return node.checked ? node.value : null
-  if (node.type === 'fieldset') return (new Form(node)).values
+  if (node.type === 'fieldset') return (new Form(node)).value
   return node.value
 }
 
@@ -237,7 +237,7 @@ function getRoot(root) {
 
 ///////////////////////
 
-export const values = (new Form()).values
+export const value = (new Form()).value
 export const tree = (new Form()).tree
 export const leaf = (new Form()).leaf
 export const dispatch = (new Form()).dispatch

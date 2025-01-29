@@ -87,62 +87,62 @@ console.groupEnd()
 
 
 console.group('Form')
-import { values, tree, leaf, listen, ignore, dispatch, batch } from './form.js'
+import { value, tree, leaf, listen, ignore, dispatch, batch } from './form.js'
 
 //Let's make these global so you can play in devtools console.
-window.values = values; window.tree = tree; window.leaf = leaf;
+window.value = value; window.tree = tree; window.leaf = leaf;
 
 
 
 
 
-console.group('values')
+console.group('value')
 
 // Get value of a form element. Same as form.elements.result.value.
-console.log('values.result:', values.result)
+console.log('value.result:', value.result)
 
 //TODO: make length as name work
-// console.log('values.result is', values.length)
+// console.log('value.result is', value.length)
 
-// You can get values inside fieldsets too
-// Same as scoped values like this: values(form.example.elements.fieldsettest).result
-console.log('values.fieldsettest.result:', values.fieldsettest.result)
+// You can get value inside fieldsets too
+// Same as scoped value like this: value(form.example.elements.fieldsettest).result
+console.log('value.fieldsettest.result:', value.fieldsettest.result)
 
 // Set value of a form element.
-values.result = 0
+value.result = 0
 
 // Set null to reset value to input.defaultValue.
-values.result = null
+value.result = null
 
 // You can delete the whole node if needed.
-// delete values.result
+// delete value.result
 
 // Set a value in a fieldset.
-values.fieldsettest.result
+value.fieldsettest.result
 
 // Radios work the same as form.elements.radio.value = x
-values.radios = 1
+value.radios = 1
 
 // You get checkbox value if checked, just like FormData does.
 // Null if not checked.
-console.log('unchecked checkbox returns null:', values.checkbox1)
+console.log('unchecked checkbox returns null:', value.checkbox1)
 
 // You set checkbox .checked property with truthy/falsy value.
 // Use plain old DOM methods to change actual checkbox value property/attribute.
-values.checkbox = true
-console.log('checked checkbox returns value:', values.checkbox1)
+value.checkbox = true
+console.log('checked checkbox returns value:', value.checkbox1)
 
 // A checkbox with a fallback value for unchecked state is common
-console.log('values.multicheck returns all:', values.multicheck)
+console.log('value.multicheck returns all:', value.multicheck)
 
 // Get a specific checkbox by using its id
-console.log('values["multicheck-one"], single checkbox by id:', values['multicheck-one'])
+console.log('value["multicheck-one"], single checkbox by id:', value['multicheck-one'])
 
 // There may be multiple inputs with the same name.
-console.log('values.multi returns all:', values.multi)
+console.log('value.multi returns all:', value.multi)
 // Set their values with an array.
-values.multi = [3, 2, 1]
-console.log('values.multi changed to:', values.multi)
+value.multi = [3, 2, 1]
+console.log('value.multi changed to:', value.multi)
 
 
 
@@ -170,33 +170,33 @@ console.groupEnd()
 console.group('listen, ignore, dispatch, batch')
 
 // Listen for input & change events.
-listen(values => {
-  values.expression = parseInt(values.number) * 3 === 30
-  if (values.expression === 'true') {
-    values.result = '* 3 = 30'
+listen(value => {
+  value.expression = parseInt(value.number) * 3 === 30
+  if (value.expression === 'true') {
+    value.result = '* 3 = 30'
   } else {
-    values.result = '* 3 ≠ 30'
+    value.result = '* 3 ≠ 30'
   }
 })
 
 // Set the events you want to listen to.
-listen('my-custom-event', (values) => {values.mood = 'Bueno'})
+listen('my-custom-event', (value) => {value.mood = 'Bueno'})
 
 // Manually send change event after setting values.
-values.result = 10
+value.result = 10
 dispatch()
 
 // Set mutliple values and send a change event after the function is done.
-batch(values => {
-  values.number = 30
-  values.number = 20
-  values.number = 10
+batch(value => {
+  value.number = 30
+  value.number = 20
+  value.number = 10
 })
 
 // Scopes work as usual.
 // Param must be an HTMLFormElement, HTMLFieldSetElement or a string for document.forms[key]
-values(form.example) // Get new values scoped to that form.
-values(form.example.elements.fieldsettest) // You can also scope to fieldsets.
+value(form.example) // Get new value scoped to that form.
+value(form.example.elements.fieldsettest) // You can also scope to fieldsets.
 batch(form.example) // Get a new batch function for that form.
 listen(form.example) // Get a new listen function for that form.
 dispatch(form.example) // Get a new dispatch function for that form.
