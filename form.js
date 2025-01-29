@@ -9,7 +9,7 @@
 //TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
 //Same goes for value, could list all values. Though it's already easy to get FormData object for the form, so not sure how useful it would be.
 
-export class Form {
+export default class Form {
   static event = new Event('change', {bubbles: true})
   static events = ['input', 'change']
 
@@ -175,6 +175,7 @@ export class Form {
   }
 }
 
+// Pretty harsh, but I really want the js to yell at me if a label is accidentally missing.
 function validate(node) {
   if (!node) {
     throw new Error(`Node missing.`, {cause: node});
@@ -185,9 +186,7 @@ function validate(node) {
   const unlabelledElement = ['fieldset', 'output', 'hidden'].includes(node.type)
   const hasLabel = node.labels?.length
   const hasAria = node.getAttribute('aria-label') || node.getAttribute('aria-labelledby')
-  if (hasLabel || hasAria || unlabelledElement) {
-    //Right on!
-  } else {
+  if (!hasLabel && !hasAria && !unlabelledElement) {
     console.error('Missing label for ', node)
   }
 }
