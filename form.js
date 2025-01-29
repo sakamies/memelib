@@ -150,7 +150,7 @@ export class Form {
     }
 
     callback(this.value)
-    this.root.changeEvent(event || Form.event)
+    this.root.dispatchEvent(event || Form.event)
   }
 
   listen = (...args) => {
