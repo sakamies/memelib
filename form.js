@@ -164,8 +164,20 @@ export class Form {
     }
   }
 
-  ignore = (...events) => {
-    //TODO: ignore events with these names. This would require gathering callbacks per event name somewhere in listen function and ignoring each of those by event name here.
+  ignore = (...args) => {
+    const root = getRoot(args[0])
+    if (root) return (new Form(root)).ignore
+
+    const callbacks = args.filter(arg => typeof arg === 'function')
+    let events = args.filter(arg => typeof arg === 'string')
+    if (!events.length) events = Form.events
+
+    for (let event of events) {
+      for (let callback of callbacks) {
+        //TODO: doesn't work yet! The function reference to the removed elements needs to be the same as in listen!
+        this.root.removeEventListener(event, () => callback(this.value))
+      }
+    }
   }
 }
 
