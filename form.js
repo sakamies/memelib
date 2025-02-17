@@ -13,77 +13,77 @@ export class Form {
   static event = new Event('change', {bubbles: true})
   static events = ['input', 'change']
 
-  root
-  path
+  #root
+  #path
 
   constructor(root, path) {
-    this.root = getRoot(root) || document.forms[0]
-    this.path = path || []
+    this.#root = getRoot(root) || document.forms[0]
+    this.#path = path || []
 
     this.value = new Proxy(function value(){}, {
-      apply: this.valueApply,
-      get: this.valueGet,
-      has: this.valueHas,
-      set: this.valueSet,
-      deleteProperty: this.valueDelete,
+      apply: this.#valueApply,
+      get: this.#valueGet,
+      // has: this.#valueHas,
+      set: this.#valueSet,
+      deleteProperty: this.#valueDelete,
     })
 
     //TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
     this.tree = new Proxy(function tree(){}, {
-      apply: this.treeApply,
-      get: this.treeGet,
-      has: this.treeHas,
-      set: this.treeSet,
-      deleteProperty: this.treeDelete,
+      apply: this.#treeApply,
+      get: this.#treeGet,
+      // has: this.#treeHas,
+      set: this.#treeSet,
+      deleteProperty: this.#treeDelete,
     })
 
     this.leaf = new Proxy(function leaf(){}, {
-      apply: this.leafApply,
-      get: this.leafGet,
-      has: this.leafHas,
-      set: this.leafSet,
-      deleteProperty: this.leafDelete,
+      apply: this.#leafApply,
+      get: this.#leafGet,
+      // has: this.#leafHas,
+      set: this.#leafSet,
+      deleteProperty: this.#leafDelete,
     })
   }
 
-  valueApply = (_, __, [root]) => {
+  #valueApply = (_, __, [root]) => {
     return (new Form(getRoot(root))).value
   }
-  valueGet = (_, name) => {
-    const node = this.root.elements[name]
+  #valueGet = (_, name) => {
+    const node = this.#root.elements[name]
     validate(node)
     return valueOf(node)
   }
-  valueSet = (_, name, value) => {
-    const node = this.root.elements[name]
+  #valueSet = (_, name, value) => {
+    const node = this.#root.elements[name]
     validate(node)
     set(node, value)
     return true
   }
-  valueDelete = (_, name) => {
-    const node = this.root.elements[name]
+  #valueDelete = (_, name) => {
+    const node = this.#root.elements[name]
     validate(node)
     del(node)
     return true
   }
 
-  treeApply = (_, __, [param]) => {
+  #treeApply = (_, __, [param]) => {
     return (new Form(getRoot(root))).tree
   }
-  treeGet = (_, name) => {
-    const path = [...this.path, name]
+  #treeGet = (_, name) => {
+    const path = [...this.#path, name]
     const fullName = nameFromPath(path)
-    const node = this.root.elements[fullName]
+    const node = this.#root.elements[fullName]
     if (node) {
       return this.value[fullName]
     } else {
-      return (new Form(this.root, path)).tree
+      return (new Form(this.#root, path)).tree
     }
   }
-  treeSet = (_, name, value) => {
-    const path = [...this.path, name]
+  #treeSet = (_, name, value) => {
+    const path = [...this.#path, name]
     const fullName = nameFromPath(path)
-    const node = this.root.elements[fullName]
+    const node = this.#root.elements[fullName]
     if (node) {
       this.value[fullName] = value
     } else {
@@ -94,10 +94,10 @@ export class Form {
     }
     return true
   }
-  treeDelete = (_, name) => {
-    const path = [...this.path, name]
+  #treeDelete = (_, name) => {
+    const path = [...this.#path, name]
     const fullName = nameFromPath(path)
-    const node = this.root.elements[fullName]
+    const node = this.#root.elements[fullName]
     if (node) {
       delete this.value[fullName]
     } else {
@@ -107,14 +107,14 @@ export class Form {
     }
   }
 
-  leafApply = (_, __, [root]) => {
+  #leafApply = (_, __, [root]) => {
     return (new Form(getRoot(root))).leaf
   }
-  leafGet = (_, name) => {
+  #leafGet = (_, name) => {
     if (name === 'length') {
       //TODO: make length as name work
     }
-    let names = Object.getOwnPropertyNames(this.root.elements)
+    let names = Object.getOwnPropertyNames(this.#root.elements)
     names = names.filter(key => key.endsWith('[' + name + ']'))
     if (names.length === 1) {
       return this.value[names[0]]
@@ -122,14 +122,14 @@ export class Form {
       return names.flatMap(name => this.value[name])
     }
   }
-  leafSet = (_, name, value) => {
-    let names = Object.getOwnPropertyNames(this.root.elements)
+  #leafSet = (_, name, value) => {
+    let names = Object.getOwnPropertyNames(this.#root.elements)
     names = names.filter(key => key.endsWith('[' + name + ']'))
     names.forEach(name => this.value[name] = value)
     return true
   }
-  leafDelete = (_, name) => {
-    let names = Object.getOwnPropertyNames(this.root.elements)
+  #leafDelete = (_, name) => {
+    let names = Object.getOwnPropertyNames(this.#root.elements)
     names = names.filter(key => key.endsWith('[' + name + ']'))
     names.forEach(name => delete this.value[name])
     return true
@@ -138,7 +138,7 @@ export class Form {
   change = (arg) => {
     const root = getRoot(arg)
     if (root) return (new Form(root)).change
-    this.root.dispatchEvent(Form.event)
+    this.#root.dispatchEvent(Form.event)
   }
 
   batch = (callback) => {
@@ -146,7 +146,7 @@ export class Form {
     if (root) return (new Form(root)).batch
 
     callback(this.value)
-    this.root.dispatchEvent(event || Form.event)
+    this.#root.dispatchEvent(event || Form.event)
   }
 
   listen = (...args) => {
@@ -159,7 +159,7 @@ export class Form {
 
     for (let event of events) {
       for (let callback of callbacks) {
-        this.root.addEventListener(event, () => callback(this.value))
+        this.#root.addEventListener(event, () => callback(this.value))
       }
     }
   }
@@ -175,7 +175,7 @@ export class Form {
     for (let event of events) {
       for (let callback of callbacks) {
         //TODO: doesn't work yet! The function reference to the removed elements needs to be the same as in listen!
-        this.root.removeEventListener(event, () => callback(this.value))
+        this.#root.removeEventListener(event, () => callback(this.value))
       }
     }
   }
