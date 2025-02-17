@@ -171,7 +171,7 @@ const scopedLead = leaf(value(form.example).fieldsetname)
 You can initialize everything in one go to your form or fieldset.
 
 ```js
-import Form from './form.js'
+import { Form } from './form.js'
 const { value, tree, leaf, listen, ignore, change, batch } = new Form(form.example)
 ```
 
@@ -275,7 +275,7 @@ Not implemented yet, will work as the opposite of listen. Just like removeEventL
 
 ## change
 
-Dispatch a change event on your form. Useful if you want to update just one value somewhere and trigger your listeners right after.
+Emit a change event on your form. Useful if you want to update just one value somewhere and trigger your listeners right after.
 
 ```js
 //document.forms[0].dispatchEvent(new Event('change', {bubbles: true}))
@@ -284,7 +284,7 @@ change()
 
 ## batch
 
-Set mutliple values and send a change event after the function is done. Same as calling `change()` once after setting multiple values.
+Set mutliple values and emit a change event after the function is done. Same as calling `change()` once after setting multiple values.
 
 ```js
 batch(value => {

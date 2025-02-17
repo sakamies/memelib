@@ -5,8 +5,12 @@ import { id, classes, form } from './memelib.js'
 //Let's make these global so you can play in devtools console.
 window.id = id; window.classes = classes, window.form = form;
 
-// Use whatever names you want by destructuring.
-//import { id: myid } from './memelib.js'
+// Use whatever names you want.
+//import { id as myid } from './memelib.js'
+
+// Or import the whole class under some name.
+//import { Meme as MyMeme } from './memelib.js'
+// MyMeme.classes...
 
 
 

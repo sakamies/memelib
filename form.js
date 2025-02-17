@@ -9,7 +9,7 @@
 //TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
 //Same goes for value, could list all values. Though it's already easy to get FormData object for the form, so not sure how useful it would be.
 
-export default class Form {
+export class Form {
   static event = new Event('change', {bubbles: true})
   static events = ['input', 'change']
 
