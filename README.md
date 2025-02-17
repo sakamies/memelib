@@ -15,7 +15,7 @@ import { id, classes, form } from './memelib.js'
 <details>
 <summary>A brief tutorial on imports & objects</summary>
 
-You can use whatever names you want by using destructuring.
+You can use whatever names you want with the `as` keyword.
 
 ```
 import { id as myid } from './memelib.js'
@@ -196,7 +196,7 @@ import { Form } from './form.js'
 const { value, tree, leaf, listen, ignore, change, batch } = new Form(form.example)
 ```
 
-## value
+## `value`
 
 `value` works by using [HTMLFormElement: elements property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) internally, so you can access elements by their id or name with `value´.
 
@@ -259,7 +259,7 @@ delete tree.rows[0].sum
 
 The logic for setting and getting different types of inputs is exactly the same as with using the `value` method.
 
-## leaf
+## `leaf`
 
 Leaf is for working with the leaf nodes of your inputs that are based on an object hierarchy. Imagine you have a bunch of rows that have `name="rows[0][sum]"` like in the example above. You might loop through them, or respond to an event coming from a single row. Scope the `leaf` method to your desired row and access the sum directly, without needing to write out the whole path to the sum.
 
@@ -273,7 +273,7 @@ classes.row.forEach((row, i) => {
 })
 ```
 
-## listen
+## `listen`
 
 Listen for input & change events on your form or fieldset. The given callback will get an instance of value as its parameter. That value will have the same form scope as the listen function.
 
@@ -290,11 +290,11 @@ listen('change', 'custom-event', updateSomeValues, updateOtherValues)
 listen('third-event', evenMoreUpdates)
 ```
 
-## ignore
+## `ignore`
 
 Not implemented yet, will work as the opposite of listen. Just like removeEventListener.
 
-## change
+## `change`
 
 Emit a change event on your form. Useful if you want to update just one value somewhere and trigger your listeners right after.
 
@@ -303,7 +303,7 @@ Emit a change event on your form. Useful if you want to update just one value so
 change()
 ```
 
-## batch
+## `batch`
 
 Set mutliple values and emit a change event after the function is done. Same as calling `change()` once after setting multiple values.
 
