@@ -137,17 +137,13 @@ export class Form {
 
   change = (arg) => {
     const root = getRoot(arg)
-    if (root) {
-      return (new Form(root)).change
-    }
+    if (root) return (new Form(root)).change
     this.root.dispatchEvent(Form.event)
   }
 
   batch = (callback) => {
     const root = getRoot(callback)
-    if (root) {
-      return (new Form(root)).batch
-    }
+    if (root) return (new Form(root)).batch
 
     callback(this.value)
     this.root.dispatchEvent(event || Form.event)
@@ -155,9 +151,7 @@ export class Form {
 
   listen = (...args) => {
     const root = getRoot(args[0])
-    if (root) {
-      return (new Form(root)).listen
-    }
+    if (root) return (new Form(root)).listen
 
     const callbacks = args.filter(arg => typeof arg === 'function')
     let events = args.filter(arg => typeof arg === 'string')
