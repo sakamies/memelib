@@ -15,7 +15,7 @@ import { id, classes, form } from './memelib.js'
 <details>
 <summary>A brief tutorial on imports & objects</summary>
 
-You can use whatever names you want with the `as` keyword.
+You can use whatever names you want by using the `as` keyword.
 
 ```
 import { id as myid } from './memelib.js'
