@@ -2,6 +2,8 @@
 
 A thin convenience on top of native DOM element methods to get and set elements and their content.
 
+About 12k as source with comments, maybe 1.5k compressed.
+
 Tries to make common operations super easy and nothing more. Assumes you know your way around DOM manipulation. Many DOM element APIs are already really nice, no need to fudge with them, just some helpers to write and read less code, hopefully without sacrificing understandability. Real easy to ditch and replace with native DOM code if you need to migrate away.
 
 Sorry about the name. Started out as a joke but turned out actually useful.
