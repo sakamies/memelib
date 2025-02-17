@@ -2,7 +2,7 @@
 
 A thin convenience on top of native DOM element methods to get and set elements and their content.
 
-Tries to make common operations super easy and nothing more. Assumes you know your way around DOM manipulation. Many DOM element APIs are already really nice, no need to fudge with them, just some helpers to write and read less code, hopefully without sacrificing understandability.
+Tries to make common operations super easy and nothing more. Assumes you know your way around DOM manipulation. Many DOM element APIs are already really nice, no need to fudge with them, just some helpers to write and read less code, hopefully without sacrificing understandability. Real easy to ditch and replace with native DOM code if you need to migrate away.
 
 Sorry about the name. Started out as a joke but turned out actually useful.
 
@@ -11,6 +11,27 @@ To get started, put memelib.js in your project and import what you need.
 ```js
 import { id, classes, form } from './memelib.js'
 ```
+
+<details>
+<summary>A brief tutorial on imports & objects</summary>
+
+You can use whatever names you want by using destructuring.
+
+```
+import { id as myid } from './memelib.js'
+```
+
+Now you'd use `myid` instead of `id` in your code.
+
+If you feel it's cleaner to have all the methods under one namespace, you can import the whole class and name it whatever you like.
+
+```
+import { Meme as MyMeme } from './memelib.js'
+```
+
+`MyMeme` will have `id`, `classes` and `form` as methods.
+
+</details>
 
 _The first commented out line in the code examples shows what's going on under the hood or how you'd do the same thing with plain old javascript._
 

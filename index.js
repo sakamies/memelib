@@ -2,7 +2,7 @@
 console.group("Memelib")
 import { id, classes, form } from './memelib.js'
 
-//Let's make these global so you can play in devtools console.
+//Let's make these global so you can play in devtools console. Just for fun, no need for any globals in prod.
 window.id = id; window.classes = classes, window.form = form;
 
 // Use whatever names you want.
@@ -92,6 +92,10 @@ console.groupEnd()
 
 console.group('Form')
 import { value, tree, leaf, listen, ignore, change, batch } from './form.js'
+
+// Start with a particular form element.
+// import { Form } from './form.js'
+// const { value, tree, leaf, listen, ignore, change, batch } = new Form(form.example)
 
 //Let's make these global so you can play in devtools console.
 window.value = value; window.tree = tree; window.leaf = leaf;
@@ -183,8 +187,12 @@ listen(value => {
   }
 })
 
-// Set the events you want to listen to.
-listen('my-custom-event', (value) => {value.mood = 'Bueno'})
+// Listen to any type of events.
+function goodMood(value) {value.mood = 'Bueno'}
+listen('my-custom-event', goodMood)
+
+// Ignore works exactly the same as listen, but removes event listeners.
+ignore('my-custom-event', goodMood)
 
 // Manually send change event after setting values.
 value.result = 10

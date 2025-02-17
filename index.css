@@ -2,7 +2,7 @@ body {
   font-family: monospace;
   line-height: 1.33;
   max-width: 100%;
-  max-width: 30rem;
+  max-width: 75ch;
   margin-inline: auto;
   padding: 1em;
 }

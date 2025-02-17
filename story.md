@@ -35,20 +35,20 @@ Set a value to the to set the whole form state at once. `form.myform = [data her
 Grab the parts and initialize with a form. There's quire a few, but they are simple, I promise!
 
 ```js
-import { values, tree, leaf, listen, ignore, dispatch, batch } from './form.js'
+import { values, tree, leaf, listen, ignore, change, batch } from './form.js'
 ```
 
 Values lets you get and set form values like the `id` helper up there. Get a value with `values.myinput`, which again is a shortcut for plain old DOM access via properties `document.forms.myform.elements.myinput.value`. So `myinput` here can be a name or id (or even the index) of the element you're after, like in the DOM.
 
 You probably guessed setting values by now. Do `values.myinput = 'something'`. Form element values are always strings, so you'll need to do some `parseFloat` and stuff if you need to wrangle numbers and such. That's always been the case, so I'm not sure I'll include any automatic type coercion into this library. Some helpers might be nice though.
 
-Usually you'll react somehow to user input or value changes on forms. That's why we have `listen`, `change` and `batch`. With `listen(values => values.myinput = 'My my')`, you can listen for changes on the form and do stuff when values change. Setting a value does not send a change event by default, so you'll be safe from infinite loops.
+Usually you'll react somehow to user input or value changes on forms. That's why we have `listen`, `change` and `batch`. With `listen(values => values.myinput = 'My my')`, you can listen for changes on the form and do stuff when values change. Setting a value does not send a change event by default, so you should be safe from infinite event loops by default.
 
 If you do want to edit a form value somewhere and react to it with `listen`, run `change()` to send a change event on your form. Event types and such are configurable of course, but let's leave that be for now.
 
 More often though, you'll maybe want to set a bunch of values and make sure that you're not spamming change events. Use `batch(values => values.myinput = 1; values.myothervalue = 2;)` to send a single change event after you're done changing a bunch of values. Same as setting individual values and running `change()` after, but batch makes sure, regardless of configuration, that it won't spam change events while running.
 
-Forms created from object hierarchies are funky. They have inputs with name attributes like `rows[0][sum]` or sometimes much deeper names. Why couldn't we navigate them by their object hierarchy like `tree.rows[0].sum`? Well we can! More often though you'll loop or otherwise be in the context of one row. So let's snatch a row and only handle its values with `leaf(rownode).sum = 123`.
+Forms created from object hierarchies are funky. They have inputs with name attributes like `rows[0][sum]` or sometimes much deeper names. Could we navigate them by their object hierarchy like `tree.rows[0].sum`? Well we can! More often though you'll loop or otherwise be in the context of one row. So let's snatch a row and only handle its values with `leaf(rownode).sum = 123`.
 
 -----
 
