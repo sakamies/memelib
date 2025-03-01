@@ -6,8 +6,17 @@
 
 //TODO: labels to go with value? Mostly so you can delete labels along with your inputs if you need to. Though if you know your input id or name, this would be kinda moot so not sure it's really needed.
 
-//TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
-//Same goes for value, could list all values. Though it's already easy to get FormData object for the form, so not sure how useful it would be.
+//TODO: listen & change should work with individual input elements as well. Now they only work with the whole form of fieldsets. Listening to a single input is rather common. Event listeners deferred to containing elements is more robust than listening directly on an input element, but still.
+
+/*TODO: Maybe maybe: Giving an object could define event names as keys and callbacks as values. Really nifty if you'd name your event handlers the same as the events.
+
+```js
+const click = event => console.log(event.target)
+const submit = event => console.log(event.target)
+listen({click, submit})
+ignore({click, submit})
+```
+*/
 
 export class Form {
   static event = new Event('change', {bubbles: true})
@@ -28,8 +37,7 @@ export class Form {
       deleteProperty: this.#valueDelete,
     })
 
-    //TODO: maybe use tree.prototype.valueOf = ... to have tree return the full name tree when tree is used as a value by itself. Like console.log(tree) shows {rows: {0: {sum: valuehere}, 1: {sum: valuehere}}}
-    this.tree = new Proxy(function tree(){}, {
+    this.tree = new Proxy(Function(), {
       apply: this.#treeApply,
       get: this.#treeGet,
       // has: this.#treeHas,
