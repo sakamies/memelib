@@ -1,15 +1,13 @@
-//TODO: test that this actually works at all.
-
 // There has to be a million billion npm modules like this already.
 
-const parser = new DOMParser()
+// TODO: does it matter that this is a body element, should maybe be a template element, but I don't see any advantage to that. Also could use DOMParser.parseFromString method, but that returns a full document and is just useless overhead.
 
-export function htmldoc(string) {
-  return parser.parseFromString(string, 'text/html')
-}
+const body = document.createElement('body')
 
 export function html(string) {
-  return Array.from(htmldoc(string).childNodes)
+  body.innerHTML = string
+  const nodes = Array.from(body.childNodes)
+  return nodes
 }
 
 export class HTML {
