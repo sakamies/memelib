@@ -179,7 +179,7 @@ The form class is very similar to the main Memelib class. It's a separate thing 
 Start with the imports.
 
 ```js
-import { value, tree, leaf, listen, ignore, change, batch } from './form.js'
+import { element, value, tree, leaf, listen, ignore, change } from './form.js'
 ```
 
 By default, all these methods are scoped to the first form on the page, so if you have only one form, they're easy to start with. You can scope any of them to your desired form or fieldset by invoking the method with the form or fieldset as a parameter.
@@ -188,14 +188,14 @@ By default, all these methods are scoped to the first form on the page, so if yo
 const scopedValue = value(form.example); console.log(scopedValue.inputname);
 const scopedTree = tree(form.example)
 const scopedLead = leaf(value(form.example).fieldsetname)
-//listen, ignore, change, batch work the same way
+//listen, ignore, change work the same way
 ```
 
 You can initialize everything in one go to your form or fieldset.
 
 ```js
 import { Form } from './form.js'
-const { value, tree, leaf, listen, ignore, change, batch } = new Form(form.example)
+const { element, value, tree, leaf, listen, ignore, change } = new Form(form.example)
 ```
 
 ## `value`
@@ -305,12 +305,10 @@ Emit a change event on your form. Useful if you want to update just one value so
 change()
 ```
 
-## `batch`
-
-Set mutliple values and emit a change event after the function is done. Same as calling `change()` once after setting multiple values.
+Set mutliple values and emit a change event after the function is done by using a callback. Same as calling `change()` once after setting multiple values.
 
 ```js
-batch(value => {
+change(() => {
   value.numberone = 11
   value.numbertwo = 22
 })

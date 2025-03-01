@@ -135,17 +135,11 @@ export class Form {
     return true
   }
 
-  change = (arg) => {
-    const root = getRoot(arg)
-    if (root) return (new Form(root)).change
-    this.#root.dispatchEvent(Form.event)
-  }
-
-  batch = (callback) => {
+  change = (callback) => {
     const root = getRoot(callback)
-    if (root) return (new Form(root)).batch
+    if (root) return (new Form(root)).change
 
-    callback(this.value)
+    if (callback) callback()
     this.#root.dispatchEvent(event || Form.event)
   }
 
