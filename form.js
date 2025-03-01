@@ -263,6 +263,5 @@ export const value = (new Form()).value
 export const tree = (new Form()).tree
 export const leaf = (new Form()).leaf
 export const change = (new Form()).change
-export const batch = (new Form()).batch
 export const listen = (new Form()).listen
 export const ignore = (new Form()).ignore
