@@ -288,7 +288,7 @@ classes.row.forEach((row, i) => {
 
 ## `listen`
 
-Listen for click, input & change events on your form or fieldset.
+Listen for click, input & change events on your form or fieldset. These default event listeners are registered in order, so click always comes first, input second and change last.
 
 ```js
 // document.forms[0].addEventListener('click', event => ...)
@@ -297,7 +297,7 @@ Listen for click, input & change events on your form or fieldset.
 listen(event => value.isthebutton = event.target === elements.buttonname)
 ```
 
-There's a bunch of ways to set up listeners. Mixed parameters of event names and functions will have all given functions react to all given event names.
+Mixed parameters of event names and functions will have all given functions react to all given event names with all given functions.
 
 ```js
 listen('click', clickHandler)
@@ -312,11 +312,13 @@ Does not support setting options on event listeners. Options are rarely needed, 
 Work as the opposite of listen, just like removeEventListener.
 
 ```js
-// document.forms[0].addEventListener('change', updateSomeValues)
+// document.forms[0].addEventListener('click', updateSomeValues)
 // document.forms[0].addEventListener('input', updateSomeValues)
+// document.forms[0].addEventListener('change', updateSomeValues)
 listen(updateSomeValues)
-// document.forms[0].removeEventListener('change', updateSomeValues)
-// document.forms[0].removeEventListener('input', updateSomeValues)
+// document.forms[0].addEventListener('click', updateSomeValues)
+// document.forms[0].addEventListener('input', updateSomeValues)
+// document.forms[0].addEventListener('change', updateSomeValues)
 ignore(updateSomeValues)
 ```
 
