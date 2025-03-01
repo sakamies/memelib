@@ -28,7 +28,7 @@ export class HTML {
       if (typeof arg === 'string') return arg
       else if (arg instanceof Element) return arg.outerHTML
       else if (arg instanceof Text) return arg.textContent
-      else if (arg[Symbol.iterator]) return HTML.stringify(iterable)
+      else if (arg[Symbol.iterator]) return HTML.stringify(...arg)
       else if (arg instanceof DocumentFragment) return HTML.stringify(arg.childNodes)
       else if (arg instanceof Document) return HTML.stringify(arg.childNodes)
     })
