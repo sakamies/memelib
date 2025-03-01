@@ -92,11 +92,11 @@ console.groupEnd()
 
 
 console.group('Form')
-import { value, tree, leaf, listen, ignore, change, batch } from './form.js'
+import { element, value, tree, leaf, listen, ignore, change } from './form.js'
 
 // Start with a particular form element.
 // import { Form } from './form.js'
-// const { value, tree, leaf, listen, ignore, change, batch } = new Form(form.example)
+// const { value, tree, leaf, listen, ignore, change } = new Form(form.example)
 
 //Let's make these global so you can play in devtools console.
 window.value = value; window.tree = tree; window.leaf = leaf;
@@ -176,7 +176,7 @@ console.groupEnd()
 
 
 
-console.group('listen, ignore, change, batch')
+console.group('listen, ignore, change')
 
 // Listen for input & change events.
 listen(value => {
@@ -210,7 +210,6 @@ batch(value => {
 // Param must be an HTMLFormElement, HTMLFieldSetElement or a string for document.forms[key]
 value(form.example) // Get new value scoped to that form.
 value(form.example.elements.fieldsettest) // You can also scope to fieldsets.
-batch(form.example) // Get a new batch function for that form.
 listen(form.example) // Get a new listen function for that form.
 change(form.example) // Get a new change function for that form.
 

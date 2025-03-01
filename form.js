@@ -20,7 +20,7 @@ ignore({click, submit})
 
 export class Form {
   static event = new Event('change', {bubbles: true})
-  static events = ['input', 'change']
+  static events = ['click', 'input', 'change']
 
   #root
   #path
