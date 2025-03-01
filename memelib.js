@@ -73,7 +73,7 @@ export class Meme {
       .filter(node => this.#root.contains(node))
 
     nodes.forEach((node, i) => {
-      set(node, typeof value === 'function' ? value(node, i) : value)
+      set(node, typeof value === 'function' ? value(node, i, nodes) : value)
     })
     return true
   }
