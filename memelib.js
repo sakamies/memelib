@@ -1,6 +1,8 @@
 //TODO: some shortcut for .querySelector() Shouldn't be a part of memelib probably. Just your regular querySelector but shorter.
 
 export class Meme {
+  #root
+
   constructor(root) {
     this.#root = root || document
 
