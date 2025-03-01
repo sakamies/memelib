@@ -288,26 +288,37 @@ classes.row.forEach((row, i) => {
 
 ## `listen`
 
-Listen for input & change events on your form or fieldset. The given callback will get an instance of value as its parameter. That value will have the same form scope as the listen function.
+Listen for click, input & change events on your form or fieldset.
 
 ```js
-// document.forms[0].addEventListener('change', e => e.form.elements.inputname.value = 200)
-// document.forms[0].addEventListener('input', e => e.form.elements.inputname.value = 200)
-listen(value => value.inputname = 200)
+// document.forms[0].addEventListener('click', event => ...)
+// document.forms[0].addEventListener('input', event => ...)
+// document.forms[0].addEventListener('change', event => ...)
+listen(event => value.isthebutton = event.target === elements.buttonname)
 ```
 
-Give any number of strings or functions to react to events in any way you need. This example reacts to these two events, and either event firing will run both functions. Then react to a third event with another function.
+There's a bunch of ways to set up listeners. Mixed parameters of event names and functions will have all given functions react to all given event names.
 
 ```js
-listen('change', 'custom-event', updateSomeValues, updateOtherValues)
-listen('third-event', evenMoreUpdates)
+listen('click', clickHandler)
+listen('submit', submitHandler)
+listen('my-event', 'some-other-event', doCustomStuff, andMoreCustomStuff)
 ```
 
 Does not support setting options on event listeners. Options are rarely needed, so if you need to set them, use the normal `element.addEventListener(type, listener, options)` method.
 
 ## `ignore`
 
-Not implemented yet, will work as the opposite of listen. Just like removeEventListener.
+Work as the opposite of listen, just like removeEventListener.
+
+```js
+// document.forms[0].addEventListener('change', updateSomeValues)
+// document.forms[0].addEventListener('input', updateSomeValues)
+listen(updateSomeValues)
+// document.forms[0].removeEventListener('change', updateSomeValues)
+// document.forms[0].removeEventListener('input', updateSomeValues)
+ignore(updateSomeValues)
+```
 
 ## `change`
 
@@ -347,4 +358,3 @@ change(() => {
 ----
 
 [^1]: This came about when I learned that [browsers make all ids top level properties on the window object](https://stackoverflow.com/questions/3434278/do-dom-tree-elements-with-ids-become-global-properties). I wanted a safe way to access ids like that.
-[^2]: Square brackets look like brick and html feels like stacking bricks. So setting html is done by assigning with square brackets.
