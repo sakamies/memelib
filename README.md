@@ -11,7 +11,7 @@ Sorry about the name. Started out as a joke but turned out actually useful.
 To get started, put memelib.js in your project and import what you need.
 
 ```js
-import { id, classes, form } from './memelib.js'
+import { id, classes, form, html } from './memelib.js'
 ```
 
 <details>
@@ -57,11 +57,17 @@ id['some-funky-id'] = 'Some funky text'
 
 ### Set html content
 
-Assign an array to set innerHTML.[^2] The array can have any number of items, they are joined as one string of html.
+Set the html content of your node by assinging a node, an array or nodes or by assigning some html `element.innerHTML`.
+
+```js
+// document.getElementByID('simpleid').replaceChildren(node1, node2, etc...)
+id.simpleid = node
+id.simpleid = [node1, node2, etc...]
+```
 
 ```js
 // document.getElementByID('simpleid').innerHTML = '<b>Some html</b>'
-id.simpleid = ['<b>Some html</b>']
+id.simpleid.innerHTML = '<b>Some html</b>'
 ```
 
 ### Delete an element
@@ -107,20 +113,21 @@ classes.someclass = 'Some text'
 
 ### Set html content
 
-Assign an array to set innerHTML.[^2] Can have any number of elements, they are joined as one string of html.
-
 ```js
-// document.getElementsByClassName('myclass').forEach(node => node.innerHTML = '<b>Some html</b>')
-classes.myclass = ['<b>Some html</b>']
+// document.getElementsByClassName('someclass').forEach(node => node.replaceChildren(node1, node2, etc...))
+classes.someclass = node
+classes.someclass = [node1, node2, etc...]
 ```
 
-### Set content of each match separately
+### Set content of each found element separately
 
-Assign a function. The function will get run for each match. The function gets the current matched node and its index as parameters. Set text by returning a string, html by returning an array, just like when assigning a value directly.
+Assign a function. The function will get run for each element of the class. The function gets the current element, its index and all elements of the class as parameters. (Same as array forEach) The return value will be set on the node. Returning a string sets textContent and returning a node or an array of nodes sets html content.
+
+If you want to set innerHTML with a string, you could loop over the elements, but then there's also this handy `html()` function in html.js that will parse any html into an array of nodes.
 
 ```js
-// document.getElementsByClassName('myclass').forEach((node, i) => node.innerHTML = `Match <b>${i}</b>`)
-classes.myclass = (node, i) => [`Match <b>${i}</b>`]
+// document.getElementsByClassName('someclass').forEach((node, i, nodes) => node.innerHTML = `Element <b>${i}</b>`)
+classes.someclass = (node, i, nodes) => html(`Element <b>${i}</b>`)
 ```
 
 ### Delete an element

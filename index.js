@@ -1,6 +1,7 @@
 
 console.group("Memelib")
 import { id, classes, form } from './memelib.js'
+import { html } from './html.js' // Optional helper for parsing html.
 
 //Let's make these global so you can play in devtools console. Just for fun, no need for any globals in prod.
 window.id = id; window.classes = classes, window.form = form;
@@ -22,11 +23,11 @@ console.log('element with id test1?', 'test1' in id)
 // Get element by id.
 console.log('id test1', id.test1)
 
-// Set textContent.
+// Replace contents with text, any type of node or an array of nodes.
 id.test1 = 'Text content'
 
-// Set innerHTML with square brackets because it's heavier and square brackets look heavier.
-id.test2 = ['<b>HTML</b> content']
+// Set innerHTML with your favourite way to parse html into nodes.
+id.test2 = html('<b>HTML</b> content')
 
 // Remove element.
 delete id.removeme
@@ -45,9 +46,9 @@ console.log('Any elements of class test?', 'test' in classes)
 // Returns an array of elements of class, iterate with any class methods of course.
 console.log('elements class test', classes.test)
 
-// Set text as string, or html with square brackets like id.
+// Set content as text or nodes, same as with id.
 // Set per node text/html with a function.
-classes.test = (node, i) => ['Test <b>' + (i+2) + '</b>']
+classes.test = (node, i) => html('Test <b>' + (i+2) + '</b>')
 
 // Only look for classes inside scope.
 const scopedClasses = classes(id.scope)
