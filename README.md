@@ -198,6 +198,10 @@ import { Form } from './form.js'
 const { element, value, tree, leaf, listen, ignore, change } = new Form(form.example)
 ```
 
+## `element`
+
+TODO: write this
+
 ## `value`
 
 `value` works by using [HTMLFormElement: elements property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) internally, so you can access elements by their id or name with `value´.
