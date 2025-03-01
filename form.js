@@ -29,7 +29,12 @@ export class Form {
     this.#root = getRoot(root) || document.forms[0]
     this.#path = path || []
 
-    this.value = new Proxy(function value(){}, {
+    this.element = new Proxy(Function(), {
+      apply: this.#elementApply,
+      get: this.#elementGet,
+    })
+
+    this.value = new Proxy(Function(), {
       apply: this.#valueApply,
       get: this.#valueGet,
       // has: this.#valueHas,
@@ -52,6 +57,15 @@ export class Form {
       set: this.#leafSet,
       deleteProperty: this.#leafDelete,
     })
+  }
+
+  #elementApply = (_, __, [root]) => {
+    return (new Form(getRoot(root))).element
+  }
+  #elementGet = (_, name) => {
+    const node = this.#root.elements[name]
+    validate(node)
+    return node
   }
 
   #valueApply = (_, __, [root]) => {
@@ -244,6 +258,7 @@ function getRoot(root) {
 
 ///////////////////////
 
+export const element = (new Form()).element
 export const value = (new Form()).value
 export const tree = (new Form()).tree
 export const leaf = (new Form()).leaf
