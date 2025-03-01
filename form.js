@@ -50,7 +50,7 @@ export class Form {
       deleteProperty: this.#treeDelete,
     })
 
-    this.leaf = new Proxy(function leaf(){}, {
+    this.leaf = new Proxy(Function(), {
       apply: this.#leafApply,
       get: this.#leafGet,
       // has: this.#leafHas,
@@ -175,7 +175,7 @@ export class Form {
 
     for (let event of events) {
       for (let callback of callbacks) {
-        this.#root.addEventListener(event, () => callback(this.value))
+        this.#root.addEventListener(event, callback)
       }
     }
   }
@@ -190,8 +190,7 @@ export class Form {
 
     for (let event of events) {
       for (let callback of callbacks) {
-        //TODO: doesn't work yet! The function reference to the removed elements needs to be the same as in listen!
-        this.#root.removeEventListener(event, () => callback(this.value))
+        this.#root.removeEventListener(event, callback)
       }
     }
   }
@@ -205,7 +204,7 @@ function validate(node) {
   if (node instanceof RadioNodeList) {
     return node.forEach(validate)
   }
-  const unlabelledElement = ['fieldset', 'output', 'hidden'].includes(node.type)
+  const unlabelledElement = ['submit', 'button', 'fieldset', 'output', 'hidden'].includes(node.type)
   const hasLabel = node.labels?.length
   const hasAria = node.getAttribute('aria-label') || node.getAttribute('aria-labelledby')
   if (!hasLabel && !hasAria && !unlabelledElement) {
@@ -219,8 +218,8 @@ function valueOf(node) {
     const values = nodes.map(n => valueOf(n))
     return values
   }
-  // if (node.valueAsDate !== null) return node.valueAsDate
-  // if (node.valueAsNumber !== NaN) return node.valueAsNumber
+  // if (node.valueAsDate && node.valueAsDate !== null) return node.valueAsDate
+  if (node.valueAsNumber && node.valueAsNumber !== NaN) return node.valueAsNumber
   if (node.type === 'checkbox') return node.checked ? node.value : null
   if (node.type === 'fieldset') return (new Form(node)).value
   return node.value

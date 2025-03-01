@@ -161,7 +161,7 @@ console.group('tree & leaf')
 
 // Get & set values named by object hierarchy.
 tree.rows[0].sum = '400'
-console.log('tree.rows[0].sum → rows[0][sum] value:', tree.rows[0].sum)
+console.log('tree.rows[0].sum → name=rows[0][sum] value=', tree.rows[0].sum)
 
 // Get & set leaves of object hierarchy.
 classes.row.forEach((row, i) => {
@@ -178,9 +178,12 @@ console.groupEnd()
 
 console.group('listen, ignore, change')
 
-// Listen for input & change events.
-listen(value => {
-  value.expression = parseInt(value.number) * 3 === 30
+// Listen for click, input & change events.
+listen(event => {
+  if (event.target === element.addnum) {
+    value.number = value.number + parseFloat(value.addnum)
+  }
+  value.expression = value.number * 3 === 30
   if (value.expression === 'true') {
     value.result = '* 3 = 30'
   } else {
@@ -189,7 +192,7 @@ listen(value => {
 })
 
 // Listen to any type of events.
-function goodMood(value) {value.mood = 'Bueno'}
+function goodMood(event) {value.mood = event.target.value}
 listen('my-custom-event', goodMood)
 
 // Ignore works exactly the same as listen, but removes event listeners.
@@ -199,8 +202,8 @@ ignore('my-custom-event', goodMood)
 value.result = 10
 change()
 
-// Set mutliple values and send a change event after the function is done.
-batch(value => {
+// Same as above, but you can se your values in a callback if you like.
+change(() => {
   value.number = 30
   value.number = 20
   value.number = 10
