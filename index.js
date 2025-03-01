@@ -1,10 +1,7 @@
 
 console.group("Memelib")
 import { id, classes, form } from './memelib.js'
-import { html } from './html.js' // Optional helper for parsing html.
-
-//Let's make these global so you can play in devtools console. Just for fun, no need for any globals in prod.
-window.id = id; window.classes = classes, window.form = form;
+import { html } from './html.js' // Optional helper for parsing html into an array of nodes.
 
 // Use whatever names you want.
 //import { id as myid } from './memelib.js'
@@ -23,7 +20,7 @@ console.log('element with id test1?', 'test1' in id)
 // Get element by id.
 console.log('id test1', id.test1)
 
-// Replace contents with text, any type of node or an array of nodes.
+// Replace contents with a string, text node, element node or an array that's any mix of those.
 id.test1 = 'Text content'
 
 // Set innerHTML with your favourite way to parse html into nodes.
