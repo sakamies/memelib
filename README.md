@@ -85,24 +85,24 @@ delete id.simpleid
 Returns an array of elements, so `map`, `filter` etc. array methods work straight away.
 
 ```js
-// Array.from(document.getElementsByClassName('myclass'))
-classes.myclass
+// Array.from(document.getElementsByClassName('someclass'))
+classes.someclass
 classes['some-funky-class']
 ```
 
 ```js
-for (node of classes.myclass) {...}
+for (node of classes.someclass) {...}
 // Maybe filter out nodes without children or some such.
-const nodesWithChildren = classes.myclass.filter(node => node.children.length)
+const nodesWithChildren = classes.someclass.filter(node => node.children.length)
 ```
 
 ### Set text content
 
-Set text content of all elements that match your class.
+Works the same as assinging content to `id.someid`, but assigns the same content to all elements of the class.
 
 ```js
-// document.getElementsByClassName('myclass').forEach(node => node.textContent = 'Some text')
-classes.myclass = 'Some text'
+// document.getElementsByClassName('someclass').forEach(node => node.textContent = 'Some text')
+classes.someclass = 'Some text'
 ```
 
 ### Set html content
@@ -126,15 +126,15 @@ classes.myclass = (node, i) => [`Match <b>${i}</b>`]
 ### Delete an element
 
 ```js
-// document.getElementsByClassName('myclass').forEach(node => node.remove())
-delete classes.myclass
+// document.getElementsByClassName('someclass').forEach(node => node.remove())
+delete classes.someclass
 ```
 
-### Check if any elements that match exist
+### Check if any elements of a class exist
 
 ```js
-// document.getElementsByClassName('myclass')?.length
-'myclass' in classes
+// document.getElementsByClassName('someclass')?.length
+'someclass' in classes
 ```
 
 ## `form`
@@ -295,6 +295,8 @@ Give any number of strings or functions to react to events in any way you need. 
 listen('change', 'custom-event', updateSomeValues, updateOtherValues)
 listen('third-event', evenMoreUpdates)
 ```
+
+Does not support setting options on event listeners. Options are rarely needed, so if you need to set them, use the normal `element.addEventListener(type, listener, options)` method.
 
 ## `ignore`
 
