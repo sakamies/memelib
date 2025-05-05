@@ -297,7 +297,7 @@ Listen for click, input & change events on your form or fieldset. These default 
 listen(event => value.isthebutton = event.target === elements.buttonname)
 ```
 
-Mixed parameters of event names and functions will have all given functions react to all given event names with all given functions.
+Mixed parameters of event names and functions will have all given functions react to all given event names.
 
 ```js
 listen('click', clickHandler)

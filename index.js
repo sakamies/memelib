@@ -115,6 +115,8 @@ console.group('value')
 
 // Get value of a form element. Same as forms.elements.result.value.
 console.log('value.result:', value.result)
+console.log('value.date:', value.date) //Date inputs return Date object (inputElement.valueAsDate)
+console.log('value.number:', value.number) //Number inputs return a number (inputElement.valueAsNumber)
 
 //TODO: make length as name work
 // console.log('value.result is', value.length)

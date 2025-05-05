@@ -218,7 +218,7 @@ function valueOf(node) {
     const values = nodes.map(n => valueOf(n))
     return values
   }
-  // if (node.valueAsDate && node.valueAsDate !== null) return node.valueAsDate
+  if (node.valueAsDate && node.valueAsDate !== null) return node.valueAsDate
   if (node.valueAsNumber && node.valueAsNumber !== NaN) return node.valueAsNumber
   if (node.type === 'checkbox') return node.checked ? node.value : null
   if (node.type === 'fieldset') return (new Form(node)).value
