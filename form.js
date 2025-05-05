@@ -204,7 +204,7 @@ function validate(node) {
   if (node instanceof RadioNodeList) {
     return node.forEach(validate)
   }
-  const unlabelledElement = ['submit', 'button', 'fieldset', 'output', 'hidden'].includes(node.type)
+  const unlabelledElement = ['submit', 'reset', 'button', 'fieldset', 'output', 'hidden'].includes(node.type)
   const hasLabel = node.labels?.length
   const hasAria = node.getAttribute('aria-label') || node.getAttribute('aria-labelledby')
   if (!hasLabel && !hasAria && !unlabelledElement) {
