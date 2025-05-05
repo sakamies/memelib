@@ -93,7 +93,7 @@ import { elements, value, tree, leaf, listen, ignore, change } from './form.js'
 
 // Start with a particular form element.
 // import { Form } from './form.js'
-// const { value, tree, leaf, listen, ignore, change } = new Form(form.example)
+// const { value, tree, leaf, listen, ignore, change } = new Form(forms.example)
 
 //Let's make these global so you can play in devtools console.
 window.elements = elements;
