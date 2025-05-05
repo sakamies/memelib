@@ -89,7 +89,7 @@ console.groupEnd()
 
 
 console.group('Form')
-import { element, value, tree, leaf, listen, ignore, change } from './form.js'
+import { elements, value, tree, leaf, listen, ignore, change } from './form.js'
 
 // Start with a particular form element.
 // import { Form } from './form.js'
