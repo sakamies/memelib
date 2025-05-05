@@ -1,24 +1,15 @@
-// There has to be a million billion npm modules like this already.
-
-// TODO: does it matter that this is a body element, should maybe be a template element, but I don't see any advantage to that. Also could use DOMParser.parseFromString method, but that returns a full document and is just useless overhead.
-
+//Convert any html string to an array of nodes.
 const body = document.createElement('body')
-
 export function html(string) {
   body.innerHTML = string
   const nodes = Array.from(body.childNodes)
   return nodes
 }
 
+//These methods on the HTML class accept any combination of strings, elements, text nodes and iterables. Iterables can be nested and can contain strings, elements, text nodes and iterables.
 export class HTML {
-
-  // HTML class methods accept any combination of strings, elements, text nodes and iterables.
-  // Iterables can contain nodes and strings or iterables.
-  // HTML.stringify('<b>', ElementNode, TextNode, NodeList, DocumentFragment, '</b>', etc...)
-  // HTML.parse() works exactly the same way.
-  // No need for this yet though, not sure it's really needed anywhere.
-
   // Returns a string of html
+  // Example: HTML.stringify('<b>', ElementNode, TextNode, NodeList, DocumentFragment, '</b>', etc...)
   static stringify(...args) {
     return args
     .filter(x => x)
@@ -33,7 +24,7 @@ export class HTML {
     .join('')
   }
 
-  // Returns an array of nodes
+  // Returns an array of nodes. Accepts the same arguments as stringify.
   static parse(...args) {
     return html(HTML.stringify(args))
   }
