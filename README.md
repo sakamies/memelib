@@ -11,7 +11,7 @@ Sorry about the name. Started out as a joke but turned out actually useful.
 To get started, put memelib.js in your project and import what you need.
 
 ```js
-import { id, classes, form, html } from './memelib.js'
+import { ids, classes, forms } from './memelib.js'
 ```
 
 <details>
@@ -20,10 +20,10 @@ import { id, classes, form, html } from './memelib.js'
 You can use whatever names you want by using the `as` keyword.
 
 ```
-import { id as myid } from './memelib.js'
+import { ids as my_ids } from './memelib.js'
 ```
 
-Now you'd use `myid` instead of `id` in your code.
+Now you'd use `my_ids` instead of `ids` in your code.
 
 If you feel it's cleaner to have all the methods under one namespace, you can import the whole class and name it whatever you like.
 
@@ -31,28 +31,28 @@ If you feel it's cleaner to have all the methods under one namespace, you can im
 import { Meme as MyMeme } from './memelib.js'
 ```
 
-`MyMeme` will have `id`, `classes` and `form` as methods.
+`MyMeme` will have `ids`, `classes` and `forms` as methods.
 
 </details>
 
 _The first commented out line in the code examples shows what's going on under the hood or how you'd do the same thing with plain old javascript._
 
-## `id`
+## `ids`
 
 ### Get element by id[^1]
 
 ```js
 // document.getElementByID('simpleid')
-id.simpleid
-id['some-funky-id']
+ids.simpleid
+ids['some-funky-id']
 ```
 
 ### Set element text content
 
 ```js
 // document.getElementByID('simpleid').textContent = 'Some Text'
-id.simpleid = 'Some text'
-id['some-funky-id'] = 'Some funky text'
+ids.simpleid = 'Some text'
+ids['some-funky-id'] = 'Some funky text'
 ```
 
 ### Set html content
@@ -61,27 +61,27 @@ Set the html content of your node by assinging a node, an array or nodes or by a
 
 ```js
 // document.getElementByID('simpleid').replaceChildren(node1, node2, etc...)
-id.simpleid = node
-id.simpleid = [node1, node2, etc...]
+ids.simpleid = node
+ids.simpleid = [node1, node2, etc...]
 ```
 
 ```js
 // document.getElementByID('simpleid').innerHTML = '<b>Some html</b>'
-id.simpleid.innerHTML = '<b>Some html</b>'
+ids.simpleid.innerHTML = '<b>Some html</b>'
 ```
 
 ### Delete an element
 
 ```js
 // document.getElementByID('simpleid').remove()
-delete id.simpleid
+delete ids.simpleid
 ```
 
 ### Check if an element exists
 
 ```js
 // !!document.getElementByID('simpleid')
-'simpleid' in id
+'simpleid' in ids
 ```
 
 ## `classes`
@@ -104,7 +104,7 @@ const nodesWithChildren = classes.someclass.filter(node => node.children.length)
 
 ### Set text content
 
-Works the same as assinging content to `id.someid`, but assigns the same content to all elements of the class.
+Works the same as assinging content to `ids.someid`, but assigns the same content to all elements of the class.
 
 ```js
 // document.getElementsByClassName('someclass').forEach(node => node.textContent = 'Some text')
@@ -144,7 +144,7 @@ delete classes.someclass
 'someclass' in classes
 ```
 
-## `form`
+## `forms`
 
 ### Get a named form
 
@@ -152,7 +152,7 @@ A named form is a `<form>` with an `id` or `name` attribute.
 
 ```js
 // document.forms['example']
-form.example
+forms.example
 ```
 
 ### Set form data
@@ -160,7 +160,7 @@ form.example
 Assign null to reset form. Use Form class below to set values on a form.
 
 ```js
-form.example = null
+forms.example = null
 ```
 
 Might implement some FormData-like way to set the whole form at once here, but haven't figured that out yet.
@@ -168,13 +168,13 @@ Might implement some FormData-like way to set the whole form at once here, but h
 ### Delete form
 
 ```js
-delete form.example
+delete forms.example
 ```
 
 ### Check if a form exists
 
 ```js
-'example' in form
+'example' in forms
 ```
 
 -----
@@ -192,9 +192,9 @@ import { element, value, tree, leaf, listen, ignore, change } from './form.js'
 By default, all these methods are scoped to the first form on the page, so if you have only one form, they're easy to start with. You can scope any of them to your desired form or fieldset by invoking the method with the form or fieldset as a parameter.
 
 ```js
-const scopedValue = value(form.example); console.log(scopedValue.inputname);
-const scopedTree = tree(form.example)
-const scopedLead = leaf(value(form.example).fieldsetname)
+const scopedValue = value(forms.example); console.log(scopedValue.inputname);
+const scopedTree = tree(forms.example)
+const scopedLead = leaf(value(forms.example).fieldsetname)
 //listen, ignore, change work the same way
 ```
 
@@ -202,7 +202,7 @@ You can initialize everything in one go to your form or fieldset.
 
 ```js
 import { Form } from './form.js'
-const { element, value, tree, leaf, listen, ignore, change } = new Form(form.example)
+const { element, value, tree, leaf, listen, ignore, change } = new Form(forms.example)
 ```
 
 ## `element`
@@ -349,7 +349,7 @@ change(() => {
     <div id="123 any ÅÄů ID will work!">
     ```
     ```js
-    const strangenode = id['123 any ÅÄů ID will work!']
+    const strangenode = ids['123 any ÅÄů ID will work!']
     ```
 
 2.  Classes uses `getElementsByClassName` internally, so you can get, set, check and delete elements that match multiple class names by adding a space between your class names. You'll get all elements with both classes.
