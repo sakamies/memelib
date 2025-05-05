@@ -213,9 +213,9 @@ TODO: write this
 
 `value` works by using [HTMLFormElement: elements property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) internally, so you can access elements by their id or name with `value´.
 
-If there are multiple form elements that match what you're trying to get (like checkboxes with the same name attribute), `value` will return an array or all their values.
+If there are multiple form elements that match what you're trying to get (like checkboxes with the same name attribute), `value` will return an array of all their values.
 
-For fieldsets, `value` will return a new instance of `value` scoped to that fieldset, so you can traverse into fieldsets if needed.
+For fieldsets, `value` will return a new instance of `value` scoped to that fieldset, so you can traverse into fieldsets.
 
 ### Get value of a form element
 

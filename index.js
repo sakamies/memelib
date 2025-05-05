@@ -3,12 +3,13 @@ console.group("Memelib")
 import { ids, classes, forms } from './memelib.js'
 import { html } from './html.js' // Optional helper for parsing html into an array of nodes.
 
-// Use whatever names you want.
-//import { id as myid } from './memelib.js'
+// Let's make these global so you can play in devtools console.
+window.ids = ids
+window.classes = classes
+window.forms = forms
 
-// Or import the whole class under some name.
-//import { Meme as MyMeme } from './memelib.js'
-// MyMeme.classes...
+// Rename your imports if you like.
+// import { ids as my_ids } from './memelib.js'
 
 
 
@@ -40,12 +41,17 @@ console.group('classes')
 // Any elements with this class?
 console.log('Any elements of class test?', 'test' in classes)
 
-// Returns an array of elements of class, iterate with any class methods of course.
+// Returns an array of elements with class 'test'
 console.log('elements class test', classes.test)
 
 // Set content as text or nodes, same as with id.
-// Set per node text/html with a function.
+classes.test = 'All class="test" elements get this text.'
+
+// Set per element html with a function.
 classes.test = (node, i) => html('Test <b>' + (i+2) + '</b>')
+
+// Iterate over found elements
+classes.test.forEach(node => node.classList.add('success'))
 
 // Only look for classes inside scope.
 const scopedClasses = classes(ids.scope)
@@ -91,7 +97,7 @@ console.groupEnd()
 console.group('Form')
 import { elements, value, tree, leaf, listen, ignore, change } from './form.js'
 
-// Start with a particular form element.
+// You can scope everything to a particular form from the start.
 // import { Form } from './form.js'
 // const { value, tree, leaf, listen, ignore, change } = new Form(forms.example)
 
