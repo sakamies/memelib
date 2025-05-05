@@ -56,17 +56,30 @@
   <input type="hidden" name="multi" value="2">
 
   <h2>Rows</h2>
-  <p>Object hierarchies as input element names.</p>
-  <div class="rows">
+  <p>Object hierarchies as input element names. Adding and removing rows in that hierarchy.</p>
+  <div id="rows">
     <fieldset class="row">
+      <input id="row-0-order" type="hidden" name="rows[0][order]" value="0">
       <label for="row-0-sum">Row 1 sum</label>
       <input id="row-0-sum" type="number" name="rows[0][sum]" value="">
+      <button type="button" name="rows[0][delete]">Remove row</button>
     </fieldset>
     <fieldset class="row">
+      <input id="row-2-order" type="hidden" name="rows[2][order]" value="2">
       <label for="row-2-sum">Row 2 sum</label>
-      <input id="row-2-sum" type="number" name="rows[1][sum]" value="">
+      <input id="row-2-sum" type="number" name="rows[2][sum]" value="">
+      <button type="button" name="rows[2][delete]">Remove row</button>
     </fieldset>
   </div>
+  <button type="button" name="rows[new]">Add row</button>
+  <template id="row-template">
+    <fieldset class="row">
+      <input id="row-%x-order" type="hidden" name="rows[%x][order]" value="%x">
+      <label for="row-%x-sum">Row %x sum</label>
+      <input id="row-%x-sum" type="number" name="rows[%x][sum]" value="">
+      <button type="button" name="rows[%x][delete]">Remove row</button>
+    </fieldset>
+  </template>
 </form>
 
 

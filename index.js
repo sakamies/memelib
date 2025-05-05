@@ -223,4 +223,34 @@ listen(forms.example) // Get a new listen instance for a specific form.
 change(forms.example) // Get a new change instance for specific form.
 
 console.groupEnd()
+
+
+
+
+
+console.group('create')
+
+//Let's make a quick reference implementation of adding and deleting rows of fields inside a form.
+listen('click', event => {
+  const et = event.target
+
+  if (et.name.includes('delete')) {
+    const deletemarker = `<input type="hidden" name="${et.name}" value="true">`
+    et.closest('.row').replaceWith(...html(deletemarker))
+  }
+
+  if (et.name.includes('new')) {
+    const lastRow = classes.row.findLast(() => true)
+    const order = parseInt(leaf(lastRow).order) + 1
+    const template = ids['row-template'].innerHTML
+    const replaced = template.replaceAll('%x', order)
+    ids.rows.append(...html(replaced))
+  }
+})
+
+console.groupEnd()
+
+
+
+
 console.groupEnd()
