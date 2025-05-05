@@ -1,6 +1,6 @@
 
 console.group("Memelib")
-import { id, classes, form } from './memelib.js'
+import { ids, classes, forms } from './memelib.js'
 import { html } from './html.js' // Optional helper for parsing html into an array of nodes.
 
 // Use whatever names you want.
@@ -12,22 +12,22 @@ import { html } from './html.js' // Optional helper for parsing html into an arr
 
 
 
-console.group('id')
+console.group('ids')
 
-// Check if element exists by id. Same as testing id.test1 to be truthy though.
-console.log('element with id test1?', 'test1' in id)
+// Check if element exists by id. Same as testing ids.test1 to be truthy though.
+console.log('element with id test1?', 'test1' in ids)
 
 // Get element by id.
-console.log('id test1', id.test1)
+console.log('id test1', ids.test1)
 
 // Replace contents with a string, text node, element node or an array that's any mix of those.
-id.test1 = 'Text content'
+ids.test1 = 'Text content'
 
-// Set innerHTML with your favourite way to parse html into nodes.
-id.test2 = html('<b>HTML</b> content')
+// Set innerHTML by assigning an array of nodes.
+ids.test2 = html('<b>HTML</b> content')
 
 // Remove element.
-delete id.removeme
+delete ids.removeme
 
 console.groupEnd()
 
@@ -48,7 +48,7 @@ console.log('elements class test', classes.test)
 classes.test = (node, i) => html('Test <b>' + (i+2) + '</b>')
 
 // Only look for classes inside scope.
-const scopedClasses = classes(id.scope)
+const scopedClasses = classes(ids.scope)
 console.log('scoped classes', scopedClasses.test)
 
 // Delete all elements of a class.
@@ -60,22 +60,22 @@ console.groupEnd()
 
 
 
-console.group('form')
+console.group('forms')
 
 // Check if element exists.
-console.log('example form exists?', 'example' in form)
+console.log('example form exists?', 'example' in forms)
 
 // Get element by name, id, or index. Same as document.forms.example.
-console.log('form named example', form.example)
+console.log('form named example', forms.example)
 
 // TODO: Set form values with FormData? Dunno how yet
-// form.example = [['key1', 'value'], ['key2', 'value']]
+// forms.example = [['key1', 'value'], ['key2', 'value']]
 
 // Reset form by setting null
-// form.example = null
+// forms.example = null
 
 // Delete whole form
-// delete form.example
+// delete forms.example
 
 console.groupEnd()
 console.groupEnd()
@@ -104,14 +104,14 @@ window.value = value; window.tree = tree; window.leaf = leaf;
 
 console.group('value')
 
-// Get value of a form element. Same as form.elements.result.value.
+// Get value of a form element. Same as forms.elements.result.value.
 console.log('value.result:', value.result)
 
 //TODO: make length as name work
 // console.log('value.result is', value.length)
 
 // You can get value inside fieldsets too
-// Same as scoped value like this: value(form.example.elements.fieldsettest).result
+// Same as scoped value like this: value(forms.example.elements.fieldsettest).result
 console.log('value.fieldsettest.result:', value.fieldsettest.result)
 
 // Set value of a form element.
@@ -126,7 +126,7 @@ value.result = null
 // Set a value in a fieldset.
 value.fieldsettest.result
 
-// Radios work the same as form.elements.radio.value = x
+// Radios work the same as forms.elements.radio.value = x
 value.radios = 1
 
 // You get checkbox value if checked, just like FormData does.
@@ -208,10 +208,10 @@ change(() => {
 
 // Scopes work as usual.
 // Param must be an HTMLFormElement, HTMLFieldSetElement or a string for document.forms[key]
-value(form.example) // Get new value scoped to that form.
-value(form.example.elements.fieldsettest) // You can also scope to fieldsets.
-listen(form.example) // Get a new listen function for that form.
-change(form.example) // Get a new change function for that form.
+value(forms.example) // Get new value scoped to that form.
+value(forms.example.elements.fieldsettest) // You can also scope to fieldsets.
+listen(forms.example) // Get a new listen instance for a specific form.
+change(forms.example) // Get a new change instance for specific form.
 
 console.groupEnd()
 console.groupEnd()

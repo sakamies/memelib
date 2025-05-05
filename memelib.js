@@ -9,11 +9,11 @@ export class Meme {
     //this.tag would return by tag like `tag.div´ dunno if it's needed.
     //this.tag = maybe?
 
-    this.id = new Proxy(Function(), {
-      get: this.#idGet,
-      has: this.#idHas,
-      set: this.#idSet,
-      deleteProperty: this.#idDelete,
+    this.ids = new Proxy(Function(), {
+      get: this.#idsGet,
+      has: this.#idsHas,
+      set: this.#idsSet,
+      deleteProperty: this.#idsDelete,
     })
 
     this.classes = new Proxy(Function(), {
@@ -25,31 +25,31 @@ export class Meme {
       // ownKeys: this.classesOwnKeys, //list all classes? not sure how useful, but fun
     })
 
-    this.form = new Proxy(Function(), {
-      has: this.#formHas,
-      get: this.#formGet,
-      set: this.#formSet,
-      delete: this.#formDelete,
+    this.forms = new Proxy(Function(), {
+      has: this.#formsHas,
+      get: this.#formsGet,
+      set: this.#formsSet,
+      delete: this.#formsDelete,
     })
 
   }
 
 
 
-  #idHas = (_, name) => {
+  #idsHas = (_, name) => {
     const node = document.getElementById(name)
     if (this.#root.contains(node)) return !!node
   }
-  #idGet = (_, name) => {
+  #idsGet = (_, name) => {
     const node = document.getElementById(name)
     if (this.#root.contains(node)) return node
   }
-  #idSet = (_, name, value) => {
+  #idsSet = (_, name, value) => {
     const node = document.getElementById(name)
     if (this.#root.contains(node)) set(node, value)
     return true
   }
-  #idDelete = (_, name) => {
+  #idsDelete = (_, name) => {
     const node = document.getElementById(name)
     if (this.#root.contains(node)) node.remove()
     return true
@@ -88,15 +88,15 @@ export class Meme {
 
 
 
-  #formHas = (_, name) => {
+  #formsHas = (_, name) => {
     const node = document.forms[name]
     if (this.#root.contains(node)) return !!node
   }
-  #formGet = (_, name) => {
+  #formsGet = (_, name) => {
     const node = document.forms[name]
     if (this.#root.contains(node)) return node
   }
-  #formSet = (_, name, data) => {
+  #formsSet = (_, name, data) => {
     const node = document.forms[name]
     if (this.#root.contains(node)) {
       if (data === null) node.reset()
@@ -105,7 +105,7 @@ export class Meme {
     //Could use form.value = x for this, but that would introduce a dependency between these files.
   return true
   }
-  #formDelete = (_, name) => {
+  #formsDelete = (_, name) => {
     const node = document.forms[name]
     if (this.#root.contains(node)) node.remove()
     return true
@@ -121,6 +121,6 @@ function set(node, content) {
 
 ///////////////////////
 
-export const id = (new Meme()).id
+export const ids = (new Meme()).ids
 export const classes = (new Meme()).classes
-export const form = (new Meme()).form
+export const forms = (new Meme()).forms
