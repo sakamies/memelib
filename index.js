@@ -96,7 +96,10 @@ import { element, value, tree, leaf, listen, ignore, change } from './form.js'
 // const { value, tree, leaf, listen, ignore, change } = new Form(form.example)
 
 //Let's make these global so you can play in devtools console.
-window.value = value; window.tree = tree; window.leaf = leaf;
+window.elements = elements;
+window.value = value;
+window.tree = tree;
+window.leaf = leaf;
 
 
 
@@ -177,7 +180,7 @@ console.group('listen, ignore, change')
 
 // Listen for click, input & change events.
 listen(event => {
-  if (event.target === element.addnum) {
+  if (event.target === elements.addnum) {
     value.number = value.number + parseFloat(value.addnum)
   }
   value.expression = value.number * 3 === 30
